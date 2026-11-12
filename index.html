@@ -97,9 +97,9 @@
     </div>
 
     <script>
-        // Explicitly set your correct username and repository name
         const USERNAME = "darkbazzuka";
         const REPO = "Jesus-market-recipes";
+        const BRANCH = "Html"; // Targets your Html branch
 
         const statusEl = document.getElementById("status");
         const listEl = document.getElementById("file-list");
@@ -108,26 +108,23 @@
 
         async function loadTextFiles() {
             try {
-                const repoResponse = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}`);
-                if (!repoResponse.ok) throw new Error(`HTTP ${repoResponse.status}: Ensure repository is Public.`);
-                const repoData = await repoResponse.json();
-                const defaultBranch = repoData.default_branch;
-
-                const treeResponse = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/git/trees/${defaultBranch}?recursive=1`);
-                if (!treeResponse.ok) throw new Error("Could not read repository file tree.");
+                // Fetch tree directly from the 'Html' branch
+                const treeResponse = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/git/trees/${BRANCH}?recursive=1`);
+                if (!treeResponse.ok) throw new Error(`HTTP ${treeResponse.status}: Could not read repository file tree from branch '${BRANCH}'.`);
                 const treeData = await treeResponse.json();
 
-                // Filter for .txt files, completely ignoring any files containing 'readme'
+                // Filter for .txt files, ignoring any files containing 'readme' or this index file
                 const txtFiles = treeData.tree.filter(item => {
                     if (item.type !== "blob") return false;
                     const lowerPath = item.path.toLowerCase();
                     const isTxt = lowerPath.endsWith(".txt");
                     const isReadme = lowerPath.includes("readme");
-                    return isTxt && !isReadme;
+                    const isIndex = lowerPath.includes("index.html");
+                    return isTxt && !isReadme && !isIndex;
                 });
 
                 if (txtFiles.length === 0) {
-                    statusEl.textContent = "No text files found (excluding readmes).";
+                    statusEl.textContent = "No text files found in the 'Html' branch (excluding readmes).";
                     return;
                 }
 
@@ -143,7 +140,7 @@
                     btn.onclick = async () => {
                         viewerEl.textContent = `Loading ${file.path}...`;
                         try {
-                            const rawRes = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${defaultBranch}/${file.path}`);
+                            const rawRes = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
                             if (!rawRes.ok) throw new Error("Failed to load file contents.");
                             const content = await rawRes.text();
                             viewerEl.textContent = content;
