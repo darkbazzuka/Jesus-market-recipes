@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jesus Market — The unrestricted workbenchr</title>
+    <title>Jesus Market — The unrestricted workbench</title>
     <style>
         body {
             background-color: #0d2818; /* Dark green background */
             color: #ecfdf5;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            max-width: 900px;
+            max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
             line-height: 1.6;
@@ -52,7 +52,14 @@
             border-color: #059669;
             color: #ffffff;
         }
+        /* Layout container for reader + ad sidebar */
+        .content-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
         .viewer-pane {
+            flex: 3;
             background: #051c10;
             border: 1px solid #14532d;
             border-radius: 8px;
@@ -63,17 +70,35 @@
             color: #bbf7d0;
             line-height: 1.8;
         }
+        /* Right sidebar for ads / images */
+        .ad-sidebar {
+            flex: 1.2;
+            background: #051c10;
+            border: 1px solid #14532d;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 400px;
+            display: none; /* Hidden until an image/ad is loaded */
+            text-align: center;
+        }
+        .ad-sidebar h3 {
+            margin-top: 0;
+            color: #6ee7b7;
+            font-size: 16px;
+            border-bottom: 1px solid #14532d;
+            padding-bottom: 10px;
+        }
         .rendered-text-line {
             white-space: pre-wrap;
             word-break: break-all;
             margin: 0;
         }
-        .embedded-render-image {
+        .embedded-render-image, .sidebar-ad-image {
             max-width: 100%;
             height: auto;
             border-radius: 6px;
             border: 1px solid #14532d;
-            margin: 15px 0;
+            margin: 10px 0;
             display: block;
         }
         .status { color: #6ee7b7; font-style: italic; }
@@ -91,8 +116,14 @@
     <!-- File selection buttons listed neatly at the top -->
     <div class="file-list-bar" id="file-list"></div>
 
-    <!-- Big full-width reader viewer pane below -->
-    <div class="viewer-pane" id="file-viewer">Click to open the Recipe</div>
+    <!-- Main display area containing text reader and right-hand image screen -->
+    <div class="content-layout">
+        <div class="viewer-pane" id="file-viewer">Click to open the Recipe</div>
+        <div class="ad-sidebar" id="ad-sidebar">
+            <h3>Ads & Media</h3>
+            <div id="sidebar-content"></div>
+        </div>
+    </div>
 
     <script>
         const USERNAME = "darkbazzuka";
@@ -102,6 +133,8 @@
         const statusEl = document.getElementById("status");
         const listEl = document.getElementById("file-list");
         const viewerEl = document.getElementById("file-viewer");
+        const adSidebarEl = document.getElementById("ad-sidebar");
+        const sidebarContentEl = document.getElementById("sidebar-content");
 
         async function loadTextFiles() {
             try {
@@ -136,27 +169,40 @@
                         btn.classList.add('active');
 
                         viewerEl.innerHTML = `Loading ${file.path}...`;
+                        sidebarContentEl.innerHTML = "";
+                        adSidebarEl.style.display = "none";
+
                         try {
                             const rawRes = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
                             if (!rawRes.ok) throw new Error("Failed to load file contents.");
                             const content = await rawRes.text();
                             
-                            // Clear and parse content line by line for RENDER IMAGE tags
                             viewerEl.innerHTML = "";
                             const lines = content.split("\n");
 
+                            // Check if file name itself ends with .ADS (case-insensitive)
+                            if (file.path.toLowerCase().endsWith(".ads")) {
+                                adSidebarEl.style.display = "block";
+                                const img = document.createElement("img");
+                                img.src = content.trim(); // Treats the text contents of the .ADS file as the image URL
+                                img.className = "sidebar-ad-image";
+                                img.onerror = () => { img.alt = `[Failed to load image from .ADS file]`; };
+                                sidebarContentEl.appendChild(img);
+                            }
+
                             lines.forEach(line => {
                                 const trimmed = line.trim();
-                                // Check if line matches: RENDER IMAGE *url*
                                 const match = trimmed.match(/^RENDER IMAGE\s*\*(.*?)\*$/i);
 
                                 if (match) {
+                                    // Populates the right-side screen when RENDER IMAGE is found
+                                    adSidebarEl.style.display = "block";
                                     const imgUrl = match[1].trim();
                                     const img = document.createElement("img");
                                     img.src = imgUrl;
-                                    img.className = "embedded-render-image";
+                                    img.className = "sidebar-ad-image";
                                     img.onerror = () => { img.alt = `[Failed to load image: ${imgUrl}]`; };
-                                    viewerEl.appendChild(img);
+                                    sidebarContentEl.appendChild(img);
                                 } else {
                                     const p = document.createElement("p");
                                     p.className = "rendered-text-line";
