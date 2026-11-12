@@ -52,8 +52,8 @@
             border-color: #059669;
             color: #ffffff;
         }
-        /* Layout container for reader + ad sidebar */
-        .content-layout {
+        /* Main two-column layout */
+        .main-layout {
             display: flex;
             gap: 20px;
             align-items: flex-start;
@@ -70,35 +70,46 @@
             color: #bbf7d0;
             line-height: 1.8;
         }
-        /* Right sidebar for ads / images */
-        .ad-sidebar {
-            flex: 1.2;
+        /* Right sidebar for random .ADS images */
+        .ads-sidebar {
+            flex: 1;
             background: #051c10;
             border: 1px solid #14532d;
             border-radius: 8px;
-            padding: 20px;
-            min-height: 400px;
-            display: none; /* Hidden until an image/ad is loaded */
+            padding: 15px;
             text-align: center;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        .ad-sidebar h3 {
+        .ads-sidebar h3 {
             margin-top: 0;
+            font-size: 14px;
             color: #6ee7b7;
-            font-size: 16px;
             border-bottom: 1px solid #14532d;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+            width: 100%;
+        }
+        .ad-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #14532d;
+            margin-top: 10px;
         }
         .rendered-text-line {
             white-space: pre-wrap;
             word-break: break-all;
             margin: 0;
         }
-        .embedded-render-image, .sidebar-ad-image {
+        .embedded-render-image {
             max-width: 100%;
             height: auto;
             border-radius: 6px;
             border: 1px solid #14532d;
-            margin: 10px 0;
+            margin: 15px 0;
             display: block;
         }
         .status { color: #6ee7b7; font-style: italic; }
@@ -116,12 +127,13 @@
     <!-- File selection buttons listed neatly at the top -->
     <div class="file-list-bar" id="file-list"></div>
 
-    <!-- Main display area containing text reader and right-hand image screen -->
-    <div class="content-layout">
+    <!-- Layout container holding left reader and right ads screen -->
+    <div class="main-layout">
         <div class="viewer-pane" id="file-viewer">Click to open the Recipe</div>
-        <div class="ad-sidebar" id="ad-sidebar">
-            <h3>Ads & Media</h3>
-            <div id="sidebar-content"></div>
+        
+        <div class="ads-sidebar" id="ads-sidebar">
+            <h3>Sponsored Ads</h3>
+            <div id="ad-container"><span class="status">Loading ads...</span></div>
         </div>
     </div>
 
@@ -133,23 +145,31 @@
         const statusEl = document.getElementById("status");
         const listEl = document.getElementById("file-list");
         const viewerEl = document.getElementById("file-viewer");
-        const adSidebarEl = document.getElementById("ad-sidebar");
-        const sidebarContentEl = document.getElementById("sidebar-content");
+        const adContainerEl = document.getElementById("ad-container");
 
-        async function loadTextFiles() {
+        let adImages = [];
+        let adInterval = null;
+
+        async function initRepository() {
             try {
                 const treeResponse = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/git/trees/${BRANCH}?recursive=1`);
                 if (!treeResponse.ok) throw new Error(`HTTP ${treeResponse.status}: Could not read repository file tree from branch '${BRANCH}'.`);
                 const treeData = await treeResponse.json();
 
+                // 1. Find Text Recipes
                 const txtFiles = treeData.tree.filter(item => {
                     if (item.type !== "blob") return false;
                     const lowerPath = item.path.toLowerCase();
-                    const isTxt = lowerPath.endsWith(".txt");
-                    const isReadme = lowerPath.includes("readme");
-                    const isIndex = lowerPath.includes("index.html");
-                    return isTxt && !isReadme && !isIndex;
+                    return lowerPath.endsWith(".txt") && !lowerPath.includes("readme") && !lowerPath.includes("index.html");
                 });
+
+                // 2. Find .ADS Image files
+                adImages = treeData.tree.filter(item => {
+                    if (item.type !== "blob") return false;
+                    return item.path.toLowerCase().endsWith(".ads");
+                }).map(file => `https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
+
+                setupAdsSystem();
 
                 if (txtFiles.length === 0) {
                     statusEl.textContent = "Sorry there are no Recipes";
@@ -164,14 +184,10 @@
                     btn.textContent = file.path;
                     
                     btn.onclick = async () => {
-                        // Highlight active button
                         document.querySelectorAll('.file-btn').forEach(b => b.classList.remove('active'));
                         btn.classList.add('active');
 
                         viewerEl.innerHTML = `Loading ${file.path}...`;
-                        sidebarContentEl.innerHTML = "";
-                        adSidebarEl.style.display = "none";
-
                         try {
                             const rawRes = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
                             if (!rawRes.ok) throw new Error("Failed to load file contents.");
@@ -180,29 +196,17 @@
                             viewerEl.innerHTML = "";
                             const lines = content.split("\n");
 
-                            // Check if file name itself ends with .ADS (case-insensitive)
-                            if (file.path.toLowerCase().endsWith(".ads")) {
-                                adSidebarEl.style.display = "block";
-                                const img = document.createElement("img");
-                                img.src = content.trim(); // Treats the text contents of the .ADS file as the image URL
-                                img.className = "sidebar-ad-image";
-                                img.onerror = () => { img.alt = `[Failed to load image from .ADS file]`; };
-                                sidebarContentEl.appendChild(img);
-                            }
-
                             lines.forEach(line => {
                                 const trimmed = line.trim();
                                 const match = trimmed.match(/^RENDER IMAGE\s*\*(.*?)\*$/i);
 
                                 if (match) {
-                                    // Populates the right-side screen when RENDER IMAGE is found
-                                    adSidebarEl.style.display = "block";
                                     const imgUrl = match[1].trim();
                                     const img = document.createElement("img");
                                     img.src = imgUrl;
-                                    img.className = "sidebar-ad-image";
+                                    img.className = "embedded-render-image";
                                     img.onerror = () => { img.alt = `[Failed to load image: ${imgUrl}]`; };
-                                    sidebarContentEl.appendChild(img);
+                                    viewerEl.appendChild(img);
                                 } else {
                                     const p = document.createElement("p");
                                     p.className = "rendered-text-line";
@@ -225,7 +229,28 @@
             }
         }
 
-        loadTextFiles();
+        // Setup random .ADS rotation every 20 seconds
+        function setupAdsSystem() {
+            if (adImages.length === 0) {
+                adContainerEl.innerHTML = `<span class="status" style="font-size: 12px;">No .ADS images found in repo.</span>`;
+                return;
+            }
+
+            function showRandomAd() {
+                const randomIndex = Math.floor(Math.random() * adImages.length);
+                const chosenUrl = adImages[randomIndex];
+                adContainerEl.innerHTML = `<img src="${chosenUrl}" alt="Advertisement" class="ad-image">`;
+            }
+
+            // Show first ad immediately
+            showRandomAd();
+
+            // Clear any existing interval just in case and randomize every 20 seconds (20000ms)
+            if (adInterval) clearInterval(adInterval);
+            adInterval = setInterval(showRandomAd, 20000);
+        }
+
+        initRepository();
     </script>
 
 </body>
