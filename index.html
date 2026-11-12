@@ -112,7 +112,7 @@
                 const txtFiles = treeData.tree.filter(item => {
                     if (item.type !== "blob") return false;
                     const lowerPath = item.path.toLowerCase();
-                    const isTxt = lowerPath.endsWith("RECIPE");
+                    const isTxt = lowerPath.endsWith(".txt");
                     const isReadme = lowerPath.includes("readme");
                     const isIndex = lowerPath.includes("index.html");
                     return isTxt && !isReadme && !isIndex;
