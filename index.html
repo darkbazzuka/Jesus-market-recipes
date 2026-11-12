@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jesus Market — Big Text & Image Reader</title>
+    <title>Jesus Market — The unrestricted workbenchr</title>
     <style>
         body {
             background-color: #0d2818; /* Dark green background */
@@ -84,15 +84,15 @@
 
     <div class="header">
         <img src="logo.jpg" alt="Jesus Market Logo" class="logo">
-        <h1>Text Files Reader</h1>
-        <p id="status" class="status">Scanning repository for text files...</p>
+        <h1>Welcome to the jesus market</h1>
+        <p id="status" class="status">LOOKING FOR RECIPES</p>
     </div>
 
     <!-- File selection buttons listed neatly at the top -->
     <div class="file-list-bar" id="file-list"></div>
 
     <!-- Big full-width reader viewer pane below -->
-    <div class="viewer-pane" id="file-viewer">Select a text file above to open it in the big reader.</div>
+    <div class="viewer-pane" id="file-viewer">Click to open the Recipe</div>
 
     <script>
         const USERNAME = "darkbazzuka";
@@ -112,14 +112,14 @@
                 const txtFiles = treeData.tree.filter(item => {
                     if (item.type !== "blob") return false;
                     const lowerPath = item.path.toLowerCase();
-                    const isTxt = lowerPath.endsWith(".txt");
+                    const isTxt = lowerPath.endsWith(" RECIPE");
                     const isReadme = lowerPath.includes("readme");
                     const isIndex = lowerPath.includes("index.html");
                     return isTxt && !isReadme && !isIndex;
                 });
 
                 if (txtFiles.length === 0) {
-                    statusEl.textContent = "No text files found in the 'Html' branch (excluding readmes).";
+                    statusEl.textContent = "Sorry there are no Recipes";
                     return;
                 }
 
