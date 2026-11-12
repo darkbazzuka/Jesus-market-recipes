@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jesus Market — Text Reader</title>
+    <title>Jesus Market — Big Text & Image Reader</title>
     <style>
         body {
             background-color: #0d2818; /* Dark green background */
             color: #ecfdf5;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            max-width: 800px;
+            max-width: 900px;
             margin: 30px auto;
             padding: 0 20px;
             line-height: 1.6;
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 1px solid #14532d;
             padding-bottom: 20px;
         }
@@ -29,53 +29,52 @@
             color: #f0fdf4;
             margin: 5px 0;
         }
-        .container {
+        .file-list-bar {
             display: flex;
-            gap: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
         }
-        .file-list-pane {
-            flex: 1;
-            max-width: 300px;
-        }
-        .viewer-pane {
-            flex: 2;
-            background: #051c10;
-            border: 1px solid #14532d;
-            border-radius: 8px;
-            padding: 20px;
-            min-height: 300px;
-            white-space: pre-wrap;
-            word-break: break-all;
-            font-family: monospace;
-            font-size: 14px;
-            color: #bbf7d0;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        li {
-            margin: 8px 0;
+        button.file-btn {
             background: #064e3b;
             border: 1px solid #065f46;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-        li:hover {
-            background: #047857;
-        }
-        button.file-link {
-            display: block;
-            width: 100%;
-            padding: 12px 16px;
-            background: none;
-            border: none;
             color: #a7f3d0;
-            text-align: left;
+            padding: 10px 18px;
+            border-radius: 6px;
             font-weight: 500;
             cursor: pointer;
             font-size: 14px;
+            transition: background 0.2s;
+        }
+        button.file-btn:hover, button.file-btn.active {
+            background: #047857;
+            border-color: #059669;
+            color: #ffffff;
+        }
+        .viewer-pane {
+            background: #051c10;
+            border: 1px solid #14532d;
+            border-radius: 8px;
+            padding: 30px;
+            min-height: 400px;
+            font-family: monospace;
+            font-size: 15px;
+            color: #bbf7d0;
+            line-height: 1.8;
+        }
+        .rendered-text-line {
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0;
+        }
+        .embedded-render-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #14532d;
+            margin: 15px 0;
+            display: block;
         }
         .status { color: #6ee7b7; font-style: italic; }
         .error { color: #f87171; }
@@ -85,35 +84,31 @@
 
     <div class="header">
         <img src="logo.jpg" alt="Jesus Market Logo" class="logo">
-        <h1>Text Files</h1>
+        <h1>Text Files Reader</h1>
         <p id="status" class="status">Scanning repository for text files...</p>
     </div>
 
-    <div class="container" id="main-container" style="display: none;">
-        <div class="file-list-pane">
-            <ul id="file-list"></ul>
-        </div>
-        <div class="viewer-pane" id="file-viewer">Select a text file from the left to read its contents.</div>
-    </div>
+    <!-- File selection buttons listed neatly at the top -->
+    <div class="file-list-bar" id="file-list"></div>
+
+    <!-- Big full-width reader viewer pane below -->
+    <div class="viewer-pane" id="file-viewer">Select a text file above to open it in the big reader.</div>
 
     <script>
         const USERNAME = "darkbazzuka";
         const REPO = "Jesus-market-recipes";
-        const BRANCH = "Html"; // Targets your Html branch
+        const BRANCH = "Html";
 
         const statusEl = document.getElementById("status");
         const listEl = document.getElementById("file-list");
         const viewerEl = document.getElementById("file-viewer");
-        const containerEl = document.getElementById("main-container");
 
         async function loadTextFiles() {
             try {
-                // Fetch tree directly from the 'Html' branch
                 const treeResponse = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/git/trees/${BRANCH}?recursive=1`);
                 if (!treeResponse.ok) throw new Error(`HTTP ${treeResponse.status}: Could not read repository file tree from branch '${BRANCH}'.`);
                 const treeData = await treeResponse.json();
 
-                // Filter for .txt files, ignoring any files containing 'readme' or this index file
                 const txtFiles = treeData.tree.filter(item => {
                     if (item.type !== "blob") return false;
                     const lowerPath = item.path.toLowerCase();
@@ -129,28 +124,53 @@
                 }
 
                 statusEl.style.display = "none";
-                containerEl.style.display = "flex";
 
                 txtFiles.forEach(file => {
-                    const li = document.createElement("li");
                     const btn = document.createElement("button");
-                    btn.className = "file-link";
+                    btn.className = "file-btn";
                     btn.textContent = file.path;
                     
                     btn.onclick = async () => {
-                        viewerEl.textContent = `Loading ${file.path}...`;
+                        // Highlight active button
+                        document.querySelectorAll('.file-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        viewerEl.innerHTML = `Loading ${file.path}...`;
                         try {
                             const rawRes = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
                             if (!rawRes.ok) throw new Error("Failed to load file contents.");
                             const content = await rawRes.text();
-                            viewerEl.textContent = content;
+                            
+                            // Clear and parse content line by line for RENDER IMAGE tags
+                            viewerEl.innerHTML = "";
+                            const lines = content.split("\n");
+
+                            lines.forEach(line => {
+                                const trimmed = line.trim();
+                                // Check if line matches: RENDER IMAGE *url*
+                                const match = trimmed.match(/^RENDER IMAGE\s*\*(.*?)\*$/i);
+
+                                if (match) {
+                                    const imgUrl = match[1].trim();
+                                    const img = document.createElement("img");
+                                    img.src = imgUrl;
+                                    img.className = "embedded-render-image";
+                                    img.onerror = () => { img.alt = `[Failed to load image: ${imgUrl}]`; };
+                                    viewerEl.appendChild(img);
+                                } else {
+                                    const p = document.createElement("p");
+                                    p.className = "rendered-text-line";
+                                    p.textContent = line;
+                                    viewerEl.appendChild(p);
+                                }
+                            });
+
                         } catch (e) {
                             viewerEl.textContent = `Error reading file: ${e.message}`;
                         }
                     };
 
-                    li.appendChild(btn);
-                    listEl.appendChild(li);
+                    listEl.appendChild(btn);
                 });
 
             } catch (err) {
