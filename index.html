@@ -9,7 +9,7 @@
             background-color: #0d2818; /* Dark green background */
             color: #ecfdf5;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            max-width: 1200px;
+            max-width: 900px;
             margin: 30px auto;
             padding: 0 20px;
             line-height: 1.6;
@@ -28,6 +28,50 @@
         h1 {
             color: #f0fdf4;
             margin: 5px 0;
+        }
+        /* Top Ad Banner Section */
+        .ads-banner {
+            background: #051c10;
+            border: 1px solid #14532d;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .ads-banner h3 {
+            margin-top: 0;
+            font-size: 14px;
+            color: #6ee7b7;
+            border-bottom: 1px solid #14532d;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .ad-image {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 6px;
+            border: 1px solid #14532d;
+        }
+        /* Search Box */
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            background: #051c10;
+            border: 1px solid #14532d;
+            border-radius: 6px;
+            color: #ecfdf5;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus {
+            border-color: #059669;
         }
         .file-list-bar {
             display: flex;
@@ -52,14 +96,8 @@
             border-color: #059669;
             color: #ffffff;
         }
-        /* Main two-column layout */
-        .main-layout {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
+        /* Bottom Reader Pane */
         .viewer-pane {
-            flex: 3;
             background: #051c10;
             border: 1px solid #14532d;
             border-radius: 8px;
@@ -69,35 +107,6 @@
             font-size: 15px;
             color: #bbf7d0;
             line-height: 1.8;
-        }
-        /* Right sidebar for random .ADS images */
-        .ads-sidebar {
-            flex: 1;
-            background: #051c10;
-            border: 1px solid #14532d;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .ads-sidebar h3 {
-            margin-top: 0;
-            font-size: 14px;
-            color: #6ee7b7;
-            border-bottom: 1px solid #14532d;
-            padding-bottom: 8px;
-            width: 100%;
-        }
-        .ad-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 6px;
-            border: 1px solid #14532d;
-            margin-top: 10px;
         }
         .rendered-text-line {
             white-space: pre-wrap;
@@ -124,18 +133,22 @@
         <p id="status" class="status">LOOKING FOR RECIPES</p>
     </div>
 
-    <!-- File selection buttons listed neatly at the top -->
+    <!-- 1. Top Ad Banner Screen (.ADS randomized every 20s) -->
+    <div class="ads-banner" id="ads-banner">
+        <h3>Sponsored Ads</h3>
+        <div id="ad-container"><span class="status">Loading ads...</span></div>
+    </div>
+
+    <!-- 2. Search Bar -->
+    <div class="search-container" id="search-container" style="display: none;">
+        <input type="text" id="search-input" class="search-input" placeholder="Search recipes...">
+    </div>
+
+    <!-- 3. File selection buttons -->
     <div class="file-list-bar" id="file-list"></div>
 
-    <!-- Layout container holding left reader and right ads screen -->
-    <div class="main-layout">
-        <div class="viewer-pane" id="file-viewer">Click to open the Recipe</div>
-        
-        <div class="ads-sidebar" id="ads-sidebar">
-            <h3></h3>
-            <div id="ad-container"><span class="status"></span></div>
-        </div>
-    </div>
+    <!-- 4. Bottom Reader Pane -->
+    <div class="viewer-pane" id="file-viewer">Click a recipe above to open it.</div>
 
     <script>
         const USERNAME = "darkbazzuka";
@@ -146,9 +159,12 @@
         const listEl = document.getElementById("file-list");
         const viewerEl = document.getElementById("file-viewer");
         const adContainerEl = document.getElementById("ad-container");
+        const searchContainerEl = document.getElementById("search-container");
+        const searchInputEl = document.getElementById("search-input");
 
         let adImages = [];
         let adInterval = null;
+        let allTxtFiles = [];
 
         async function initRepository() {
             try {
@@ -157,7 +173,7 @@
                 const treeData = await treeResponse.json();
 
                 // 1. Find Text Recipes
-                const txtFiles = treeData.tree.filter(item => {
+                allTxtFiles = treeData.tree.filter(item => {
                     if (item.type !== "blob") return false;
                     const lowerPath = item.path.toLowerCase();
                     return lowerPath.endsWith(".txt") && !lowerPath.includes("readme") && !lowerPath.includes("index.html");
@@ -171,57 +187,22 @@
 
                 setupAdsSystem();
 
-                if (txtFiles.length === 0) {
+                if (allTxtFiles.length === 0) {
                     statusEl.textContent = "Sorry there are no Recipes";
                     return;
                 }
 
                 statusEl.style.display = "none";
+                searchContainerEl.style.display = "block";
 
-                txtFiles.forEach(file => {
-                    const btn = document.createElement("button");
-                    btn.className = "file-btn";
-                    btn.textContent = file.path;
-                    
-                    btn.onclick = async () => {
-                        document.querySelectorAll('.file-btn').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
+                renderRecipeButtons(allTxtFiles);
 
-                        viewerEl.innerHTML = `Loading ${file.path}...`;
-                        try {
-                            const rawRes = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
-                            if (!rawRes.ok) throw new Error("Failed to load file contents.");
-                            const content = await rawRes.text();
-                            
-                            viewerEl.innerHTML = "";
-                            const lines = content.split("\n");
-
-                            lines.forEach(line => {
-                                const trimmed = line.trim();
-                                const match = trimmed.match(/^RENDER IMAGE\s*\*(.*?)\*$/i);
-
-                                if (match) {
-                                    const imgUrl = match[1].trim();
-                                    const img = document.createElement("img");
-                                    img.src = imgUrl;
-                                    img.className = "embedded-render-image";
-                                    img.onerror = () => { img.alt = `[Failed to load image: ${imgUrl}]`; };
-                                    viewerEl.appendChild(img);
-                                } else {
-                                    const p = document.createElement("p");
-                                    p.className = "rendered-text-line";
-                                    p.textContent = line;
-                                    viewerEl.appendChild(p);
-                                }
-                            });
-
-                        } catch (e) {
-                            viewerEl.textContent = `Error reading file: ${e.message}`;
-                        }
-                    };
-
-                    listEl.appendChild(btn);
-                });
+                // Search filtering logic
+                searchInputEl.oninput = (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const filtered = allTxtFiles.filter(file => file.path.toLowerCase().includes(query));
+                    renderRecipeButtons(filtered);
+                };
 
             } catch (err) {
                 statusEl.className = "error";
@@ -229,7 +210,60 @@
             }
         }
 
-        // Setup random .ADS rotation every 20 seconds
+        function renderRecipeButtons(files) {
+            listEl.innerHTML = "";
+            if (files.length === 0) {
+                listEl.innerHTML = `<span class="status">No matching recipes found.</span>`;
+                return;
+            }
+
+            files.forEach(file => {
+                const btn = document.createElement("button");
+                btn.className = "file-btn";
+                btn.textContent = file.path;
+                
+                btn.onclick = async () => {
+                    document.querySelectorAll('.file-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    viewerEl.innerHTML = `Loading ${file.path}...`;
+                    try {
+                        const rawRes = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
+                        if (!rawRes.ok) throw new Error("Failed to load file contents.");
+                        const content = await rawRes.text();
+                        
+                        viewerEl.innerHTML = "";
+                        const lines = content.split("\n");
+
+                        lines.forEach(line => {
+                            const trimmed = line.trim();
+                            const match = trimmed.match(/^RENDER IMAGE\s*\*(.*?)\*$/i);
+
+                            if (match) {
+                                const imgUrl = match[1].trim();
+                                const img = document.createElement("img");
+                                img.src = imgUrl;
+                                img.className = "embedded-render-image";
+                                img.onerror = () => { img.alt = `[Failed to load image: ${imgUrl}]`; };
+                                viewerEl.appendChild(img);
+                            } else {
+                                const p = document.createElement("p");
+                                p.className = "rendered-text-line";
+                                p.textContent = line;
+                                viewerEl.appendChild(p);
+                            }
+                        });
+
+                    } catch (e) {
+                        viewerEl.textContent = `Error reading file: ${e.message}`;
+                    }
+                };
+
+                listEl.appendChild(btn);
+            });
+        }
+
+        // Setup random .ADS banner rotation every 20 seconds
         function setupAdsSystem() {
             if (adImages.length === 0) {
                 adContainerEl.innerHTML = `<span class="status" style="font-size: 12px;">No .ADS images found in repo.</span>`;
@@ -242,10 +276,8 @@
                 adContainerEl.innerHTML = `<img src="${chosenUrl}" alt="Advertisement" class="ad-image">`;
             }
 
-            // Show first ad immediately
             showRandomAd();
 
-            // Clear any existing interval just in case and randomize every 20 seconds (20000ms)
             if (adInterval) clearInterval(adInterval);
             adInterval = setInterval(showRandomAd, 20000);
         }
