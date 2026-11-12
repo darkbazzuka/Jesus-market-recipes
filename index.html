@@ -84,7 +84,6 @@
 <body>
 
     <div class="header">
-        <!-- Make sure your logo file is uploaded to the repo as logo.png -->
         <img src="logo.jpg" alt="Jesus Market Logo" class="logo">
         <h1>Text Files</h1>
         <p id="status" class="status">Scanning repository for text files...</p>
@@ -98,11 +97,9 @@
     </div>
 
     <script>
-        const hostParts = window.location.hostname.split(".");
-        const pathParts = window.location.pathname.split("/").filter(Boolean);
-
-        const USERNAME = hostParts[0] === "darkbazzuka" ? "darkbazzuka" : (hostParts[0] || "darkbazzuka");
-        const REPO = pathParts[0] || "/Jesus-market-recipes/blob/Html";
+        // Explicitly set your correct username and repository name
+        const USERNAME = "darkbazzuka";
+        const REPO = "Jesus-market-recipes";
 
         const statusEl = document.getElementById("status");
         const listEl = document.getElementById("file-list");
