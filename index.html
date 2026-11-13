@@ -3,357 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jesus Market — The Unrestricted Workbench</title>
+    <title>Jesus Market</title>
     <style>
         body {
-            background-color: #0d2818; /* Dark green theme backdrop */
-            color: #111827;
-            font-family: "Market Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            max-width: 1050px;
+            background-color: #eee;
+            color: #333;
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
             margin: 20px auto;
-            padding: 0 15px;
-            line-height: 1.5;
+            padding: 0 10px;
         }
-        /* eBay-style Marketplace Header */
-        .header {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
+        /* eBay Header Bar */
+        .ebay-header {
+            background: #fff;
+            border-bottom: 1px solid #ccc;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 4px 4px 0 0;
+        }
+        .ebay-logo {
+            max-height: 40px;
+        }
+        .ebay-search {
+            flex-grow: 1;
+            margin: 0 20px;
+            display: flex;
+        }
+        .ebay-search input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #3665f3;
+            border-radius: 20px 0 0 20px;
+            outline: none;
+            font-size: 14px;
+        }
+        .ebay-search button {
+            background: #3665f3;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        /* Top Ad Banner */
+        .ad-banner {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-top: none;
+            padding: 10px;
             text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .logo {
-            max-width: 180px;
-            height: auto;
-            margin-bottom: 10px;
-        }
-        h1 {
-            color: #1f2937;
-            font-size: 22px;
-            margin: 0 0 5px 0;
-        }
-        .subtitle {
-            color: #4b5563;
-            font-size: 13px;
-            margin: 0;
-        }
-        /* Top Ad Banner Section */
-        .ads-banner {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .ads-banner h3 {
-            margin: 0 0 10px 0;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #6b7280;
-            border-bottom: 1px solid #f3f4f6;
-            padding-bottom: 5px;
         }
         .ad-image {
+            max-height: 200px;
             max-width: 100%;
-            max-height: 280px;
             object-fit: contain;
-            border-radius: 4px;
         }
-        /* Marketplace Search Bar */
-        .search-container {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
+        /* Main Container */
+        .content-container {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-top: none;
+            padding: 20px;
+            border-radius: 0 0 4px 4px;
+            min-height: 400px;
         }
-        .search-input {
-            width: 100%;
-            max-width: 600px;
-            padding: 12px 20px;
-            background: #ffffff;
-            border: 2px solid #059669;
-            border-radius: 24px;
-            color: #1f2937;
-            font-size: 15px;
-            outline: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .search-input::placeholder {
-            color: #9ca3af;
-        }
-        /* eBay Grid Item Cards Container */
-        .file-list-grid {
+        /* Item Grid */
+        .item-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
-            margin-bottom: 30px;
         }
-        /* Product Tile Card Style */
-        .file-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 12px;
+        .item-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: #fff;
+            transition: box-shadow 0.2s;
             text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .file-card:hover {
-            border-color: #059669;
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
-            transform: translateY(-2px);
+        .item-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-color: #3665f3;
         }
-        .file-card.active {
-            border: 2px solid #059669;
-            background-color: #f0fdf4;
-        }
-        .card-thumb {
+        .item-thumb {
             width: 100%;
-            height: 130px;
-            background: #f3f4f6;
-            border-radius: 6px;
+            height: 140px;
             object-fit: cover;
-            margin-bottom: 10px;
-            border: 1px solid #e5e7eb;
+            border-radius: 2px;
+            background: #f9f9f9;
+            margin-bottom: 8px;
         }
-        .card-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1f2937;
+        .item-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #0654ba;
             word-break: break-all;
-            margin: 5px 0;
+            margin: 0;
         }
-        /* Bottom Detailed Item Viewer Pane */
-        .viewer-pane {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 30px;
-            min-height: 350px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            font-size: 15px;
-            color: #1f2937;
+        /* Single Item View Page */
+        .item-view {
+            display: none;
+        }
+        .back-btn {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .back-btn:hover {
+            background: #e0e0e0;
+        }
+        .item-description {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
             line-height: 1.6;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .rendered-text-line {
+            color: #333;
             white-space: pre-wrap;
             word-break: break-all;
-            margin: 0 0 10px 0;
         }
         .embedded-render-image {
             max-width: 100%;
             height: auto;
-            border-radius: 6px;
-            border: 1px solid #e5e7eb;
+            border-radius: 4px;
             margin: 15px 0;
             display: block;
         }
-        .status { color: #047857; font-style: italic; font-weight: 500; text-align: center; }
-        .error { color: #dc2626; font-weight: bold; text-align: center; }
+        .status-msg {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <img src="logo.jpg" alt="Jesus Market Logo" class="logo">
-        <h1>Jesus Market Workbench</h1>
-        <p class="subtitle">The unrestricted peer-to-peer marketplace & recipe archive</p>
+    <!-- eBay Header -->
+    <div class="ebay-header">
+        <img src="logo.jpg" alt="Jesus Market" class="ebay-logo" onerror="this.style.display='none'">
+        <div class="ebay-search">
+            <input type="text" id="search-input" placeholder="Search for anything">
+            <button>Search</button>
+        </div>
     </div>
 
-    <!-- 1. Top Ad Banner Screen (.ADS randomized every 20s) -->
-    <div class="ads-banner" id="ads-banner">
-        <h3>Sponsored Listing / Ad</h3>
-        <div id="ad-container"><span class="status">Loading ad network...</span></div>
+    <!-- Ad Banner -->
+    <div class="ad-banner" id="ad-banner">
+        <div id="ad-container"><span class="status-msg" style="font-size: 12px;">Loading sponsored ad...</span></div>
     </div>
 
-    <!-- 2. Marketplace Search Bar -->
-    <div class="search-container" id="search-container" style="display: none;">
-        <input type="text" id="search-input" class="search-input" placeholder="Search items, recipes, or workbench parts...">
+    <!-- Main Content Area -->
+    <div class="content-container">
+        
+        <!-- Grid View of Items -->
+        <div id="grid-view">
+            <div id="item-grid" class="item-grid">
+                <div class="status-msg">Loading listings...</div>
+            </div>
+        </div>
+
+        <!-- Single Item Detail View -->
+        <div id="item-view" class="item-view">
+            <button class="back-btn" onclick="showGrid()">&lt; Back to results</button>
+            <h2 id="view-title" style="margin-top: 0; color: #111;"></h2>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            <div id="view-content" class="item-description"></div>
+        </div>
+
     </div>
-
-    <!-- 3. eBay Grid Cards for Files -->
-    <div class="file-list-grid" id="file-list"></div>
-
-    <!-- 4. Bottom Detailed Item Viewer Pane -->
-    <div class="viewer-pane" id="file-viewer">Select an item above to view description and details.</div>
 
     <script>
         const USERNAME = "darkbazzuka";
         const REPO = "Jesus-market-recipes";
         const BRANCH = "Html";
 
-        const listEl = document.getElementById("file-list");
-        const viewerEl = document.getElementById("file-viewer");
-        const adContainerEl = document.getElementById("ad-container");
-        const searchContainerEl = document.getElementById("search-container");
+        const itemGridEl = document.getElementById("item-grid");
+        const gridViewEl = document.getElementById("grid-view");
+        const itemViewEl = document.getElementById("item-view");
+        const viewTitleEl = document.getElementById("view-title");
+        const viewContentEl = document.getElementById("view-content");
         const searchInputEl = document.getElementById("search-input");
+        const adContainerEl = document.getElementById("ad-container");
 
+        let allFiles = [];
         let adImages = [];
         let adInterval = null;
-        let allTxtFiles = [];
 
-        async function initRepository() {
+        async function init() {
             try {
-                viewerEl.innerHTML = `<p class="status">Connecting to Jesus Market servers...</p>`;
-                const treeResponse = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/git/trees/${BRANCH}?recursive=1`);
-                if (!treeResponse.ok) throw new Error(`HTTP ${treeResponse.status}: Could not read repository file tree from branch '${BRANCH}'.`);
-                const treeData = await treeResponse.json();
+                const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/git/trees/${BRANCH}?recursive=1`);
+                if (!res.ok) throw new Error("Could not connect to repository.");
+                const data = await res.json();
 
-                // 1. Find Text Recipes
-                allTxtFiles = treeData.tree.filter(item => {
+                // Find text files
+                allFiles = data.tree.filter(item => {
                     if (item.type !== "blob") return false;
-                    const lowerPath = item.path.toLowerCase();
-                    return lowerPath.endsWith(".txt") && !lowerPath.includes("readme") && !lowerPath.includes("index.html");
+                    const p = item.path.toLowerCase();
+                    return p.endsWith(".txt") && !p.includes("readme") && !p.includes("index.html");
                 });
 
-                // 2. Find .ADS Image files
-                adImages = treeData.tree.filter(item => {
+                // Find .ADS images
+                adImages = data.tree.filter(item => {
                     if (item.type !== "blob") return false;
                     return item.path.toLowerCase().endsWith(".ads");
                 }).map(file => `https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
 
-                setupAdsSystem();
+                setupAds();
 
-                if (allTxtFiles.length === 0) {
-                    viewerEl.innerHTML = `<p class="status">Sorry, there are no listings or recipes available right now.</p>`;
+                if (allFiles.length === 0) {
+                    itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1;">No listings found.</div>`;
                     return;
                 }
 
-                searchContainerEl.style.display = "flex";
+                // Pre-fetch text to check for thumbnails
+                for (let file of allFiles) {
+                    try {
+                        const fileRes = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
+                        if (fileRes.ok) {
+                            const text = await fileRes.text();
+                            file.cachedContent = text;
+                            const match = text.match(/THUMBIMAGE:\s*\*(.*?)\*/i);
+                            file.thumbnailUrl = match ? match[1].trim() : null;
+                        }
+                    } catch (e) {
+                        file.cachedContent = "";
+                        file.thumbnailUrl = null;
+                    }
+                }
 
-                // Pre-fetch text content for all files to scan for thumbnails instantly
-                viewerEl.innerHTML = `<p class="status">Loading marketplace inventory...</p>`;
-                await parseAllFileThumbnails(allTxtFiles);
+                renderGrid(allFiles);
 
-                renderRecipeCards(allTxtFiles);
-                viewerEl.innerHTML = "Select an item from the listings above to view details.";
-
-                // Search filtering logic
                 searchInputEl.oninput = (e) => {
-                    const query = e.target.value.toLowerCase();
-                    const filtered = allTxtFiles.filter(file => file.path.toLowerCase().includes(query));
-                    renderRecipeCards(filtered);
+                    const q = e.target.value.toLowerCase();
+                    const filtered = allFiles.filter(f => f.path.toLowerCase().includes(q));
+                    renderGrid(filtered);
                 };
 
             } catch (err) {
-                viewerEl.innerHTML = `<p class="error">Error: ${err.message}</p>`;
+                itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1; color: red;">Error: ${err.message}</div>`;
             }
         }
 
-        // Helper to scan text files for THUMBIMAGE: *url* beforehand
-        async function parseAllFileThumbnails(files) {
-            for (let file of files) {
-                try {
-                    const res = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${file.path}`);
-                    if (res.ok) {
-                        const text = await res.text();
-                        file.cachedContent = text;
-                        
-                        // Look for THUMBIMAGE: *url*
-                        const match = text.match(/THUMBIMAGE:\s*\*(.*?)\*/i);
-                        if (match) {
-                            file.thumbnailUrl = match[1].trim();
-                        } else {
-                            file.thumbnailUrl = null;
-                        }
-                    }
-                } catch (e) {
-                    file.cachedContent = "";
-                    file.thumbnailUrl = null;
-                }
-            }
-        }
-
-        function renderRecipeCards(files) {
-            listEl.innerHTML = "";
+        function renderGrid(files) {
+            itemGridEl.innerHTML = "";
             if (files.length === 0) {
-                listEl.innerHTML = `<div style="grid-column: 1/-1; text-align: center;"><span class="status">No matching items found.</span></div>`;
+                itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1;">No matching items found.</div>`;
                 return;
             }
 
             files.forEach(file => {
                 const card = document.createElement("div");
-                card.className = "file-card";
-                
-                // Thumbnail image or generic placeholder
-                const thumbSrc = file.thumbnailUrl ? file.thumbnailUrl : "logo.jpg";
-                
+                card.className = "item-card";
+
+                const thumb = file.thumbnailUrl ? file.thumbnailUrl : "logo.jpg";
+
                 card.innerHTML = `
-                    <img src="${thumbSrc}" class="card-thumb" alt="Thumbnail" onerror="this.src='logo.jpg'">
-                    <div class="card-title">${file.path}</div>
+                    <img src="${thumb}" class="item-thumb" alt="Item" onerror="this.src='logo.jpg'">
+                    <p class="item-title">${file.path}</p>
                 `;
-                
-                card.onclick = async () => {
-                    document.querySelectorAll('.file-card').forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
 
-                    viewerEl.innerHTML = `<p class="status">Loading details for ${file.path}...</p>`;
-                    
-                    try {
-                        const content = file.cachedContent || "";
-                        viewerEl.innerHTML = "";
-                        const lines = content.split("\n");
-
-                        lines.forEach(line => {
-                            const trimmed = line.trim();
-                            
-                            // Skip displaying the THUMBIMAGE config line in the body text viewer
-                            if (trimmed.match(/^THUMBIMAGE:/i)) return;
-
-                            const match = trimmed.match(/^RENDER IMAGE\s*\*(.*?)\*$/i);
-
-                            if (match) {
-                                const imgUrl = match[1].trim();
-                                const img = document.createElement("img");
-                                img.src = imgUrl;
-                                img.className = "embedded-render-image";
-                                img.onerror = () => { img.alt = `[Failed to load image: ${imgUrl}]`; };
-                                viewerEl.appendChild(img);
-                            } else {
-                                const p = document.createElement("p");
-                                p.className = "rendered-text-line";
-                                p.textContent = line;
-                                viewerEl.appendChild(p);
-                            }
-                        });
-
-                    } catch (e) {
-                        viewerEl.textContent = `Error reading file: ${e.message}`;
-                    }
-                };
-
-                listEl.appendChild(card);
+                card.onclick = () => openItem(file);
+                itemGridEl.appendChild(card);
             });
         }
 
-        // Setup random .ADS banner rotation every 20 seconds
-        function setupAdsSystem() {
+        function openItem(file) {
+            gridViewEl.style.display = "none";
+            itemViewEl.style.display = "block";
+            viewTitleEl.textContent = file.path;
+            viewContentEl.innerHTML = "Loading description...";
+
+            const lines = (file.cachedContent || "").split("\n");
+            viewContentEl.innerHTML = "";
+
+            lines.forEach(line => {
+                const trimmed = line.trim();
+                if (trimmed.match(/^THUMBIMAGE:/i)) return; // Skip thumbnail tag in body
+
+                const match = trimmed.match(/^RENDER IMAGE\s*\*(.*?)\*$/i);
+                if (match) {
+                    const imgUrl = match[1].trim();
+                    const img = document.createElement("img");
+                    img.src = imgUrl;
+                    img.className = "embedded-render-image";
+                    img.onerror = () => { img.alt = `[Failed to load image: ${imgUrl}]`; };
+                    viewContentEl.appendChild(img);
+                } else {
+                    const p = document.createElement("p");
+                    p.style.margin = "0 0 10px 0";
+                    p.textContent = line;
+                    viewContentEl.appendChild(p);
+                }
+            });
+        }
+
+        function showGrid() {
+            itemViewEl.style.display = "none";
+            gridViewEl.style.display = "block";
+        }
+
+        function setupAds() {
             if (adImages.length === 0) {
-                adContainerEl.innerHTML = `<span class="status" style="font-size: 12px;">No sponsored .ADS images found in repository.</span>`;
+                document.getElementById("ad-banner").style.display = "none";
                 return;
             }
 
-            function showRandomAd() {
-                const randomIndex = Math.floor(Math.random() * adImages.length);
-                const chosenUrl = adImages[randomIndex];
-                adContainerEl.innerHTML = `<img src="${chosenUrl}" alt="Sponsored Ad" class="ad-image">`;
+            function rotateAd() {
+                const randomUrl = adImages[Math.floor(Math.random() * adImages.length)];
+                adContainerEl.innerHTML = `<img src="${randomUrl}" alt="Ad" class="ad-image">`;
             }
 
-            showRandomAd();
-
+            rotateAd();
             if (adInterval) clearInterval(adInterval);
-            adInterval = setInterval(showRandomAd, 20000);
+            adInterval = setInterval(rotateAd, 20000);
         }
 
-        initRepository();
+        init();
     </script>
 
 </body>
