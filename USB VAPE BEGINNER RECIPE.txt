@@ -1,4 +1,4 @@
-THUMBIMAGE: *https://github.com/darkbazzuka/Jesus-market-recipes/blob/Html/Untitled.jpg*
+THUMBIMAGE: *https://raw.githubusercontent.com/darkbazzuka/Jesus-market-recipes/Html/Untitled.jpg*
 
 
 
