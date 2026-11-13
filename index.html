@@ -6,8 +6,8 @@
     <title>Jesus Market</title>
     <style>
         body {
-            background-color: #eee;
-            color: #333;
+            background-color: #0d2818; /* Dark green theme background */
+            color: #ecfdf5;
             font-family: Arial, sans-serif;
             max-width: 1000px;
             margin: 20px auto;
@@ -15,13 +15,14 @@
         }
         /* eBay Header Bar */
         .ebay-header {
-            background: #fff;
-            border-bottom: 1px solid #ccc;
+            background: #051c10;
+            border: 1px solid #14532d;
+            border-bottom: 1px solid #14532d;
             padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-radius: 4px 4px 0 0;
+            border-radius: 8px 8px 0 0;
         }
         .ebay-logo {
             max-height: 40px;
@@ -34,40 +35,51 @@
         .ebay-search input {
             width: 100%;
             padding: 10px 15px;
-            border: 2px solid #3665f3;
+            background: #0d2818;
+            border: 2px solid #059669;
             border-radius: 20px 0 0 20px;
             outline: none;
             font-size: 14px;
+            color: #ecfdf5;
+        }
+        .ebay-search input::placeholder {
+            color: #6ee7b7;
         }
         .ebay-search button {
-            background: #3665f3;
+            background: #059669;
             color: white;
             border: none;
             padding: 0 20px;
             border-radius: 0 20px 20px 0;
             cursor: pointer;
             font-weight: bold;
+            transition: background 0.2s;
+        }
+        .ebay-search button:hover {
+            background: #047857;
         }
         /* Top Ad Banner */
         .ad-banner {
-            background: #fff;
-            border: 1px solid #ccc;
+            background: #051c10;
+            border: 1px solid #14532d;
             border-top: none;
-            padding: 10px;
+            padding: 15px;
             text-align: center;
         }
         .ad-image {
-            max-height: 200px;
+            max-height: 250px;
             max-width: 100%;
             object-fit: contain;
+            border-radius: 4px;
+            border: 1px solid #14532d;
         }
         /* Main Container */
         .content-container {
-            background: #fff;
-            border: 1px solid #ccc;
+            background: #051c10;
+            border: 1px solid #14532d;
             border-top: none;
             padding: 20px;
-            border-radius: 0 0 4px 4px;
+            border-radius: 0 0 8px 8px;
             min-height: 400px;
         }
         /* Item Grid */
@@ -77,30 +89,32 @@
             gap: 15px;
         }
         .item-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 10px;
+            border: 1px solid #14532d;
+            border-radius: 6px;
+            padding: 12px;
             cursor: pointer;
-            background: #fff;
-            transition: box-shadow 0.2s;
+            background: #0d2818;
+            transition: all 0.2s;
             text-align: center;
         }
         .item-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            border-color: #3665f3;
+            border-color: #34d399;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+            transform: translateY(-2px);
         }
         .item-thumb {
             width: 100%;
             height: 140px;
             object-fit: cover;
-            border-radius: 2px;
-            background: #f9f9f9;
+            border-radius: 4px;
+            background: #051c10;
             margin-bottom: 8px;
+            border: 1px solid #14532d;
         }
         .item-title {
             font-size: 13px;
             font-weight: bold;
-            color: #0654ba;
+            color: #34d399;
             word-break: break-all;
             margin: 0;
         }
@@ -109,36 +123,40 @@
             display: none;
         }
         .back-btn {
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            padding: 6px 12px;
+            background: #064e3b;
+            color: #a7f3d0;
+            border: 1px solid #065f46;
+            padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
             margin-bottom: 15px;
             font-weight: bold;
+            transition: background 0.2s;
         }
         .back-btn:hover {
-            background: #e0e0e0;
+            background: #047857;
+            color: #ffffff;
         }
         .item-description {
-            font-family: Arial, sans-serif;
+            font-family: monospace;
             font-size: 14px;
-            line-height: 1.6;
-            color: #333;
+            line-height: 1.8;
+            color: #bbf7d0;
             white-space: pre-wrap;
             word-break: break-all;
         }
         .embedded-render-image {
             max-width: 100%;
             height: auto;
-            border-radius: 4px;
+            border-radius: 6px;
+            border: 1px solid #14532d;
             margin: 15px 0;
             display: block;
         }
         .status-msg {
             text-align: center;
-            color: #666;
+            color: #6ee7b7;
             font-style: italic;
             padding: 40px;
         }
@@ -173,8 +191,8 @@
         <!-- Single Item Detail View -->
         <div id="item-view" class="item-view">
             <button class="back-btn" onclick="showGrid()">&lt; Back to results</button>
-            <h2 id="view-title" style="margin-top: 0; color: #111;"></h2>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            <h2 id="view-title" style="margin-top: 0; color: #f0fdf4;"></h2>
+            <hr style="border: 0; border-top: 1px solid #14532d; margin: 15px 0;">
             <div id="view-content" class="item-description"></div>
         </div>
 
@@ -248,7 +266,7 @@
                 };
 
             } catch (err) {
-                itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1; color: red;">Error: ${err.message}</div>`;
+                itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1; color: #f87171;">Error: ${err.message}</div>`;
             }
         }
 
