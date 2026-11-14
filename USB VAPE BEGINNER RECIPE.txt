@@ -1,15 +1,132 @@
 THUMBIMAGE: *https://raw.githubusercontent.com/darkbazzuka/Jesus-market-recipes/Html/Untitled.jpg*
 
+Warning. this is a homamade vape projet, we are not responsible for any incidents
 
 
-Choose a heating element: You can use a ceramic or quartz rod as your heating element. These materials are known for their ability to heat up quickly and evenly, providing a consistent vaping experience.
+📋 PARTS LIST
+Electronics
+Part
+Spec
+Where
+Notes
+USB-C plug/cable
+Any standard
+Everywhere
+Input only
+DC-DC buck module
+5V→adjustable, e.g. MT3608 (step-up) won't work — use LM2596-based adjustable module set to 3.5V
+AliExpress/eBay, $1
+Set output with multimeter
+P-channel MOSFET
+SI2301 CDS or similar
+$0.50
+Main on/off switch
+Resistor
+10kΩ ×2, 1kΩ ×1
+$0.10
+Button pull-down/divider
+Momentary push button
+6×6mm
+$0.20
+Fire button
+Multimeter
+—
+Your drawer
+Non-negotiable
 
-Find a suitable container: You can use a glass tube or tank as your container. Make sure it is heat-resistant and can hold your chosen e-liquid.
 
-Connect the heating element to the USB port: You will need to solder the heating element to a wire that can be plugged into a USB port. Make sure the connection is secure and does not overheat.
+Coil & atomizer
+Part
+Spec
+Notes
+Kanthal A1 wire
+26 AWG (0.4mm), 5cm
+Easy to work with, forgiving
+Ceramic fiber wick OR organic cotton
+Cotton = better flavor, replace weekly
+Ceramic lasts weeks
+Small glass tube
+8mm ID × 30mm, heat-resistant
+The "tank"
+Stainless steel ring/clamp
+To hold glass tube in pen body
+Or 3D-print a sleeve
+Drip tip
+510 thread, any color
+Standard vape part
 
-Attach the container to the heating element: Use silicone or heat-resistant tape to attach the glass tube or tank to the heating element. This will ensure that the e-liquid comes into contact with the heating element when it is powered on.
 
-Fill the container with e-liquid: Be careful not to overfill the container, as this can cause leaks. Use a syringe or dropper to add your chosen e-liquid to the glass tube or tank.
+Housing (the pen)
+Option
+Details
+Best: Empty 510-thread vape pen shell
+Buy a "510 battery mod" shell without electronics, or strip one. ~$5
+Budget: Aluminum pen barrel (7–8mm OD)
+Cut to 90mm, drill a hole for USB-C connector on top
+Hacker: Actual retractable pen + 3D-printed sleeve
+Works, looks weird, very fun
 
-Test the vape: Plug the vape into a USB port and turn it on. Inhale gently on the mouthpiece to draw vapor into your mouth. Adjust the power settings as needed to achieve your desired level of vapor production.
+
+Misc
+Heat shrink tubing, electrical tape
+Solder (lead-free fine), flux
+Isopropyl alcohol (cleaning)
+Your e-juice (from the previous recipe — kept separate as requested)
+🔧 STEP-BY-STEP BUILD
+Step 1 — Build the coil (do this first, it's the heart)
+Wrap 5 turns of 26 AWG kanthal around a 3mm nail or dowel.
+Trim legs to ~15mm each, bend them flat and parallel.
+Measure resistance with your multimeter — target 1.0–1.5 Ω. Too low? Add a turn. Too high? Remove one.
+Soak a small pad of cotton (or fold ceramic fiber) and wrap it through the coil center.
+Thread the coil legs through two holes drilled in a small stainless disc (or bend a U-shape from stainless sheet) — this becomes the coil mount.
+Test before assembly: Dip the wick in your juice, hold the coil over a cup, and power it briefly from the buck module. It should glow faintly orange within seconds and produce gentle vapor. If it smells burnt immediately, your voltage is too high — dial the buck down.
+
+Step 2 — Wire the electronics
+On a breadboard first:
+Buck module VIN+ / VIN− → USB-C 5V / GND
+Buck VOUT+ → one leg of MOSFET drain
+MOSFET source → coil leg A
+Coil leg B → USB GND (common return)
+Button between MOSFET gate and ground, with 10kΩ pull-up to VOUT+
+Verify with multimeter: pressing the button should drop the voltage across the MOSFET to near 0V (coil gets full power); releasing restores it.
+Once confirmed, transfer to a small perfboard or solder directly into the pen shell.
+Step 3 — Assemble the pen
+Mount the buck module + MOSFET board at the bottom of the pen shell (heaviest part lowest = balanced feel).
+Route the USB-C connector out the bottom cap.
+Place the glass tube tank in the middle section, secured by the metal sleeve.
+Insert the coil mount so the coil sits inside the glass tube, centered, not touching the walls.
+Attach the drip tip on top.
+Run coil wires up through the tank base plate, solder to terminals that press against the coil legs (a simple spring-loaded contact works).
+Step 4 — Juice it (your step, not mine)
+Fill the glass tube ~⅔ with your Citrus Fizz juice.
+Let the wick soak 10 minutes before first puff.
+First 3 puffs: short hits, watch for dry spots.
+⚡ PERFORMANCE EXPECTATIONS
+Metric
+Value
+Power draw
+~10–14W
+Current from USB
+~2.5–3A (use a good charger; cheap laptop ports may sag)
+Vapor production
+Modest, MTL-style — dense flavor clouds, not cloud-chasing
+Flavor accuracy
+Excellent — constant voltage = constant flavor, no battery fade
+Coil life
+Cotton: ~1 week. Ceramic: ~3–4 weeks
+Tank capacity
+~1.5 ml
+
+
+Known limitations (honest ones):
+
+You're tethered to wherever the USB port is. Desk-vaping device, basically.
+No variable wattage — you get what the buck outputs. Fix: swap in a PWM dimmer chip (NE555 timer driving the MOSFET) for 2–3 fixed power levels. Fun weekend upgrade.
+Glass tube must be heat-rated. Borosilicate (Pyrex-type) is ideal.
+🛠️ UPGRADE PATH (once v1 works)
+PWM power control — NE555 + potentiometer = 3 power settings on the button (short/medium/long press).
+Temp sensor — Thermistor in the tank wall + Arduino Nano = auto shut-off if coil overheats. Safety net worth building.
+LED indicator — Small RGB LED showing "ready / firing / coil hot."
+Magnetic quick-release tank — Two neodymium magnets let you pop the tank off for cleaning without unscrewing.
+Enclosure redesign — 3D-print a proper pen casing with a hidden USB pocket and a sliding tank window.
+
