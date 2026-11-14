@@ -4,11 +4,6 @@ Warning. this is a homamade vape projet, we are not responsible for any incident
 
 
 📋 PARTS LIST
-Electronics
-Part
-Spec
-Where
-Notes
 USB-C plug/cable
 Any standard
 Everywhere
