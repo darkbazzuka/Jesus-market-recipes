@@ -170,6 +170,7 @@
             color: #f0fdf4;
             font-size: 22px;
             font-weight: 700;
+            word-break: break-word;
         }
 
         .divider {
@@ -206,12 +207,46 @@
 
         .error-msg { color: #f87171 !important; }
 
-        /* Subtle footer touch */
         .footer {
             text-align: center;
             color: #6d5a9c;
             font-size: 12px;
             padding: 18px 0 8px 0;
+        }
+
+        /* ===== Mobile Responsive Additions ===== */
+        @media (max-width: 600px) {
+            body {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 12px;
+                padding: 12px;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .logo {
+                height: 36px;
+            }
+
+            .content {
+                padding: 12px;
+            }
+
+            .item-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 10px;
+            }
+
+            .item-thumb {
+                height: 110px;
+            }
         }
     </style>
 </head>
