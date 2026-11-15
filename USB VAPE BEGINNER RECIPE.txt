@@ -1,4 +1,4 @@
-THUKMBIMAGE: *https://github.com/darkbazzuka/Jesus-market-recipes/Html/Untitled.jpg*
+THUKMBIMAGE: *https://raw.githubusercontent.com/darkbazzuka/Jesus-market-recipes/refs/heads/Html/Untitled.jpg*
 
 What You Will Need
 
