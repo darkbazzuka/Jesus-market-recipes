@@ -3,187 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jesus Market</title>
+    <title>Jesus Market [SECURE ARCHIVE]</title>
     <style>
         * { box-sizing: border-box; }
 
         body {
-            background: linear-gradient(160deg, #1a0b2e 0%, #0f1f17 100%);
-            color: #ecfdf5;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 15px;
+            background: #000000;
+            color: #00ff66;
+            font-family: "Courier New", Courier, monospace;
+            max-width: 900px;
+            margin: 10px auto;
+            padding: 0 10px;
         }
 
-        /* ===== Header ===== */
+        /* ===== 2000s Underground Header ===== */
         .header {
-            background: rgba(30, 15, 50, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid #4c1d95;
-            border-radius: 12px;
-            padding: 14px 20px;
+            background: #050f07;
+            border: 2px solid #00ff66;
+            padding: 12px;
             display: flex;
             align-items: center;
-            gap: 18px;
-            box-shadow: 0 4px 20px rgba(88, 28, 135, 0.25);
+            gap: 15px;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .logo {
-            height: 42px;
+            height: 40px;
             width: auto;
-            border-radius: 6px;
+            border: 1px solid #00ff66;
         }
 
         .search {
             flex-grow: 1;
             display: flex;
-            gap: 8px;
+            gap: 5px;
         }
 
         .search input {
             flex-grow: 1;
-            padding: 10px 16px;
-            background: rgba(15, 31, 23, 0.8);
-            border: 1px solid #4c1d95;
-            border-radius: 24px;
+            padding: 8px 12px;
+            background: #000000;
+            border: 1px solid #00ff66;
             outline: none;
-            font-size: 14px;
-            color: #ecfdf5;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 13px;
+            color: #00ff66;
         }
 
-        .search input:focus {
-            border-color: #34d399;
-            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
-        }
-
-        .search input::placeholder { color: #a78bfa; }
+        .search input::placeholder { color: #005522; }
 
         .search button {
-            background: linear-gradient(135deg, #7c3aed, #059669);
-            color: white;
+            background: #00ff66;
+            color: #000000;
             border: none;
-            padding: 0 22px;
-            border-radius: 24px;
+            padding: 0 15px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: opacity 0.2s, transform 0.1s;
+            font-weight: bold;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 13px;
         }
 
-        .search button:hover { opacity: 0.9; }
-        .search button:active { transform: scale(0.97); }
+        .search button:hover { background: #00cc52; }
 
         /* ===== Ad Banner ===== */
         .ad-banner {
-            background: rgba(30, 15, 50, 0.6);
-            border: 1px solid #4c1d95;
-            border-radius: 12px;
-            padding: 12px;
+            background: #050f07;
+            border: 2px solid #00ff66;
+            padding: 10px;
             text-align: center;
-            margin-top: 14px;
+            margin-bottom: 10px;
         }
 
         .ad-image {
-            max-height: 220px;
+            max-height: 180px;
             max-width: 100%;
             object-fit: contain;
-            border-radius: 8px;
+            border: 1px dashed #00ff66;
         }
 
-        /* ===== Main Content ===== */
+        /* ===== Main Content Area ===== */
         .content {
-            background: rgba(15, 31, 23, 0.5);
-            border: 1px solid #3b2a5e;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 14px;
-            min-height: 300px;
+            background: #050f07;
+            border: 2px solid #00ff66;
+            padding: 15px;
+            min-height: 350px;
         }
 
-        /* ===== Item Grid ===== */
+        /* ===== Scrollable Item Grid ===== */
+        .grid-container {
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Custom scrollbar for 2000s feel */
+        .grid-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .grid-container::-webkit-scrollbar-track {
+            background: #000000;
+            border: 1px solid #005522;
+        }
+        .grid-container::-webkit-scrollbar-thumb {
+            background: #00ff66;
+        }
+
         .item-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 10px;
         }
 
         .item-card {
-            background: rgba(30, 15, 50, 0.6);
-            border: 1px solid #3b2a5e;
-            border-radius: 10px;
-            padding: 12px;
+            background: #000000;
+            border: 1px solid #00ff66;
+            padding: 8px;
             cursor: pointer;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: background 0.1s;
         }
 
         .item-card:hover {
-            border-color: #34d399;
-            box-shadow: 0 6px 18px rgba(52, 211, 153, 0.2);
-            transform: translateY(-3px);
+            background: #00220c;
+            border-color: #ffffff;
         }
 
         .item-thumb {
             width: 100%;
-            height: 130px;
+            height: 110px;
             object-fit: cover;
-            border-radius: 8px;
-            background: #1a0b2e;
-            margin-bottom: 10px;
-            border: 1px solid #3b2a5e;
+            background: #050f07;
+            margin-bottom: 6px;
+            border: 1px solid #005522;
         }
 
         .item-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #6ee7b7;
+            font-size: 12px;
+            font-weight: bold;
+            color: #00ff66;
             word-break: break-all;
             margin: 0;
-            line-height: 1.4;
         }
 
         /* ===== Single Item View ===== */
         .item-view { display: none; }
 
         .back-btn {
-            background: transparent;
-            color: #a78bfa;
-            border: 1px solid #4c1d95;
-            padding: 8px 18px;
-            border-radius: 20px;
+            background: #000000;
+            color: #00ff66;
+            border: 1px solid #00ff66;
+            padding: 6px 14px;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            transition: all 0.2s;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
         }
 
         .back-btn:hover {
-            background: #4c1d95;
-            color: #fff;
+            background: #00ff66;
+            color: #000000;
         }
 
         .view-title {
-            margin: 0 0 14px 0;
-            color: #f0fdf4;
-            font-size: 22px;
-            font-weight: 700;
+            margin: 0 0 10px 0;
+            color: #ffffff;
+            font-size: 18px;
+            border-bottom: 1px dashed #00ff66;
+            padding-bottom: 5px;
             word-break: break-word;
         }
 
-        .divider {
-            border: 0;
-            border-top: 1px solid #4c1d95;
-            margin: 0 0 16px 0;
-        }
-
         .item-description {
-            font-family: 'Consolas', monospace;
-            font-size: 14px;
-            line-height: 1.8;
-            color: #bbf7d0;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #aaffcc;
             white-space: pre-wrap;
             word-break: break-word;
         }
@@ -191,61 +186,35 @@
         .embedded-render-image {
             max-width: 100%;
             height: auto;
-            border-radius: 8px;
-            border: 1px solid #4c1d95;
-            margin: 16px 0;
+            border: 1px solid #00ff66;
+            margin: 10px 0;
             display: block;
         }
 
-        /* ===== Status / Misc ===== */
+        /* ===== Status & Footer ===== */
         .status-msg {
             text-align: center;
-            color: #a78bfa;
+            color: #005522;
             font-style: italic;
-            padding: 40px;
+            padding: 30px;
         }
 
-        .error-msg { color: #f87171 !important; }
+        .error-msg { color: #ff3333 !important; }
 
         .footer {
             text-align: center;
-            color: #6d5a9c;
-            font-size: 12px;
-            padding: 18px 0 8px 0;
+            color: #005522;
+            font-size: 11px;
+            margin-top: 10px;
         }
 
-        /* ===== Mobile Responsive Additions ===== */
         @media (max-width: 600px) {
-            body {
-                margin: 10px auto;
-                padding: 0 10px;
-            }
-
             .header {
                 flex-direction: column;
-                gap: 12px;
-                padding: 12px;
+                align-items: stretch;
             }
-
-            .search {
-                width: 100%;
-            }
-
-            .logo {
-                height: 36px;
-            }
-
-            .content {
-                padding: 12px;
-            }
-
             .item-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 10px;
-            }
-
-            .item-thumb {
-                height: 110px;
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             }
         }
     </style>
@@ -256,35 +225,36 @@
     <div class="header">
         <img src="logo.jpg" alt="Jesus Market" class="logo" onerror="this.style.display='none'">
         <div class="search">
-            <input type="text" id="search-input" placeholder="Search recipes & items...">
-            <button>Search</button>
+            <input type="text" id="search-input" placeholder="SEARCH DIRECTORY...">
+            <button>FIND</button>
         </div>
     </div>
 
     <!-- Ad Banner -->
     <div class="ad-banner" id="ad-banner">
-        <div id="ad-container"><span class="status-msg" style="font-size: 12px;">Loading sponsored ad...</span></div>
+        <div id="ad-container"><span class="status-msg" style="font-size: 11px;">[LOADING AD FEED...]</span></div>
     </div>
 
     <!-- Main Content -->
     <div class="content">
-        <!-- Grid View -->
+        <!-- Grid View with Scrollbar -->
         <div id="grid-view">
-            <div id="item-grid" class="item-grid">
-                <div class="status-msg">Loading listings...</div>
+            <div class="grid-container">
+                <div id="item-grid" class="item-grid">
+                    <div class="status-msg">[SCANNING REPOSITORY FILES...]</div>
+                </div>
             </div>
         </div>
 
         <!-- Single Item Detail View -->
         <div id="item-view" class="item-view">
-            <button class="back-btn" onclick="showGrid()">&larr; Back to results</button>
+            <button class="back-btn" onclick="showGrid()">&lt; BACK TO LISTINGS</button>
             <h2 class="view-title" id="view-title"></h2>
-            <hr class="divider">
             <div id="view-content" class="item-description"></div>
         </div>
     </div>
 
-    <div class="footer">Jesus Market — free recipes you can make at home</div>
+    <div class="footer">&gt;&gt;&gt; JESUS MARKET // SECURE WORKBENCH NODE &lt;&lt;&lt;</div>
 
     <script>
         const USERNAME = "darkbazzuka";
@@ -306,7 +276,7 @@
         async function init() {
             try {
                 const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/git/trees/${BRANCH}?recursive=1`);
-                if (!res.ok) throw new Error("Could not connect to repository.");
+                if (!res.ok) throw new Error("CONNECTION FAILED.");
                 const data = await res.json();
 
                 allFiles = data.tree.filter(item => {
@@ -323,7 +293,7 @@
                 setupAds();
 
                 if (allFiles.length === 0) {
-                    itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1;">No listings found.</div>`;
+                    itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1;">NO LISTINGS FOUND.</div>`;
                     return;
                 }
 
@@ -351,14 +321,14 @@
                 };
 
             } catch (err) {
-                itemGridEl.innerHTML = `<div class="status-msg error-msg" style="grid-column: 1/-1;">Error: ${err.message}</div>`;
+                itemGridEl.innerHTML = `<div class="status-msg error-msg" style="grid-column: 1/-1;">ERROR: ${err.message}</div>`;
             }
         }
 
         function renderGrid(files) {
             itemGridEl.innerHTML = "";
             if (files.length === 0) {
-                itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1;">No matching items found.</div>`;
+                itemGridEl.innerHTML = `<div class="status-msg" style="grid-column: 1/-1;">NO MATCHING ITEMS.</div>`;
                 return;
             }
 
@@ -369,7 +339,7 @@
                 const thumb = file.thumbnailUrl || "logo.jpg";
 
                 card.innerHTML = `
-                    <img src="${thumb}" class="item-thumb" alt="Item" onerror="this.src='https://github.com/darkbazzuka/Jesus-market-recipes/blob/Html/logo.jpg'">
+                    <img src="${thumb}" class="item-thumb" alt="Thumb" onerror="this.src='https://github.com/darkbazzuka/Jesus-market-recipes/blob/Html/logo.jpg'">
                     <p class="item-title">${file.path}</p>
                 `;
 
@@ -396,7 +366,7 @@
                     const img = document.createElement("img");
                     img.src = imgUrl;
                     img.className = "embedded-render-image";
-                    img.onerror = () => { img.alt = `[Failed to load image: ${imgUrl}]`; };
+                    img.onerror = () => { img.alt = `[FAILED TO LOAD: ${imgUrl}]`; };
                     viewContentEl.appendChild(img);
                 } else {
                     const p = document.createElement("p");
