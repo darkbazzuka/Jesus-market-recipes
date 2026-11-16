@@ -120,14 +120,15 @@
         <hr>
     </div>
 
-    <address>WELCOME TO THE JESUS MARKET. Where the goods are for anyone to make
-    WERE NOT RESPONSIBLE FOR ANY DAMAGES TO YOU OR OTHERS.
-    Thanks and happy building :D</address>
+    <address>WELCOME TO THE JESUS MARKET. Where the goods are for anyone to make WERE NOT RESPONSIBLE FOR ANY DAMAGES TO YOU OR OTHERS. Thanks and happy building :D</address>
 
     <script type="text/javascript">
         var USERNAME = "darkbazzuka";
         var REPO = "Jesus-market-recipes";
         var BRANCH = "Html";
+        
+        // PASTE YOUR GITHUB TOKEN HERE:
+        var GITHUB_TOKEN = "YOUR_TOKEN_HERE"; 
 
         var tableBodyEl = document.getElementById("file-table-body");
         var dirHeadingEl = document.getElementById("dir-heading");
@@ -150,6 +151,9 @@
             
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url, true);
+            if (GITHUB_TOKEN !== "") {
+                xhr.setRequestHeader("Authorization", "token " + GITHUB_TOKEN);
+            }
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
@@ -160,7 +164,11 @@
                             for (var i = 0; i < data.tree.length; i++) {
                                 var item = data.tree[i];
                                 if (item.type === "blob" && item.path.toLowerCase().slice(-4) === ".ads") {
-                                    adImages.push("https://raw.githubusercontent.com/" + USERNAME + "/" + REPO + "/" + BRANCH + "/" + item.path);
+                                    var adUrl = "https://raw.githubusercontent.com/" + USERNAME + "/" + REPO + "/" + BRANCH + "/" + item.path;
+                                    if (GITHUB_TOKEN !== "") {
+                                        adUrl += "?token=" + GITHUB_TOKEN;
+                                    }
+                                    adImages.push(adUrl);
                                 }
                             }
                             setupAds();
@@ -200,7 +208,7 @@
                             tableBodyEl.innerHTML = '<tr><td colspan="3" style="color:red;">Parse error.</td></tr>';
                         }
                     } else {
-                        tableBodyEl.innerHTML = '<tr><td colspan="3" style="color:red;">Connection failed.</td></tr>';
+                        tableBodyEl.innerHTML = '<tr><td colspan="3" style="color:red;">Connection failed (Check token permissions).</td></tr>';
                     }
                 }
             };
@@ -299,6 +307,9 @@
             var fileUrl = "https://raw.githubusercontent.com/" + USERNAME + "/" + REPO + "/" + BRANCH + "/" + path;
             var rxhr = new XMLHttpRequest();
             rxhr.open("GET", fileUrl, true);
+            if (GITHUB_TOKEN !== "") {
+                rxhr.setRequestHeader("Authorization", "token " + GITHUB_TOKEN);
+            }
             rxhr.onreadystatechange = function() {
                 if (rxhr.readyState === 4) {
                     if (rxhr.status === 200) {
