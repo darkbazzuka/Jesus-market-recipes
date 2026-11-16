@@ -267,11 +267,11 @@
                 var fileName = segments[segments.length - 1];
 
                 if (entry.type === "tree") {
-                    tr.innerHTML = '<td class="icon">[DIR]</td><td><a href="javascript:void(0)" onclick="openFolder(\'' + entry.path + '\')">' + fileName + '/</a></td><td>-</td>';
+                    tr.innerHTML = '<td class="icon">[📁]</td><td><a href="javascript:void(0)" onclick="openFolder(\'' + entry.path + '\')">' + fileName + '/</a></td><td>-</td>';
                 } else {
                     var displayName = fileName.replace(/\.txt$/i, "");
                     var sizeStr = entry.size ? entry.size + " B" : "-";
-                    tr.innerHTML = '<td class="icon">[TXT]</td><td><a href="javascript:void(0)" onclick="openFile(\'' + entry.path + '\', \'' + displayName + '\')">' + displayName + '</a></td><td>' + sizeStr + '</td>';
+                    tr.innerHTML = '<td class="icon">[📄]</td><td><a href="javascript:void(0)" onclick="openFile(\'' + entry.path + '\', \'' + displayName + '\')">' + displayName + '</a></td><td>' + sizeStr + '</td>';
                 }
                 tableBodyEl.appendChild(tr);
             }
