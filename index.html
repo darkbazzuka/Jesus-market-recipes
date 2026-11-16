@@ -196,35 +196,35 @@
                             }
                             setupAds();
 
-                            // Filter tree for RECIPE folders and .txt files
-                            for (var j = 0; j < data.tree.length; j++) {
-                                var node = data.tree[j];
-                                var parts = node.path.split("/");
-                                var name = parts[parts.length - 1];
-                                var lowerName = name.toLowerCase();
-
-                                if (node.type === "tree") {
-                                    var allRecipes = true;
-                                    for (var p = 0; p < parts.length; p++) {
-                                        if (parts[p].toLowerCase().slice(-6) !== "recipe") {
-                                            allRecipes = false;
-                                            break;
-                                        }
-                                    }
-                                    if (allRecipes) validTree.push(node);
-                                } else if (node.type === "blob") {
-                                    if (lowerName.slice(-4) !== ".txt" || lowerName.indexOf("readme") !== -1) continue;
-                                    var folders = parts.slice(0, -1);
-                                    var validParent = true;
-                                    for (var f = 0; f < folders.length; f++) {
-                                        if (folders[f].toLowerCase().slice(-6) !== "recipe") {
-                                            validParent = false;
-                                            break;
-                                        }
-                                    }
-                                    if (validParent) validTree.push(node);
-                                }
-                            }
+                // Filter tree for RECIPE folders and .txt files
+                for (var j = 0; j < data.tree.length; j++) {
+                var node = data.tree[j];
+                var parts = node.path.split("/");
+                var name = parts[parts.length - 1];
+                var lowerName = name.toLowerCase();
+            
+                if (node.type === "tree") {
+                    var allRecipes = true;
+                    for (var p = 0; p < parts.length; p++) {
+                        if (parts[p].toLowerCase().slice(-6) !== "recipe") {
+                            allRecipes = false;
+                            break;
+                        }
+                    }
+                    if (allRecipes) validTree.push(node);
+                } else if (node.type === "blob") {
+                    if (lowerName.slice(-4) !== ".txt" || lowerName.indexOf("readme") !== -1) continue;
+                    var folders = parts.slice(0, -1);
+                    var validParent = true;
+                    for (var f = 0; f < folders.length; f++) {
+                        if (folders[f].toLowerCase().slice(-6) !== "recipe") {
+                            validParent = false;
+                            break;
+                        }
+                    }
+                    if (validParent) validTree.push(node);
+                }
+            }
 
                             renderDirectory();
                         } catch (e) {
