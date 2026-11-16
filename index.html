@@ -2,11 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index of /Jesus-market-recipes</title>
     <style>
         body {
             background-color: #ffffff;
-            color: #000000;
+            color: #004411;
             font-family: "Courier New", Courier, monospace;
             margin: 10px;
             font-size: 13px;
@@ -15,15 +16,16 @@
             font-family: "Times New Roman", Times, serif;
             font-size: 20px;
             margin: 0 0 5px 0;
+            color: #006622;
         }
         hr {
             border: 0;
-            border-top: 1px solid #000000;
+            border-top: 1px solid #008833;
             margin: 5px 0;
         }
         .ad-banner {
-            border: 1px solid #000000;
-            background: #eeeeee;
+            border: 1px solid #008833;
+            background: #e6f9ed;
             padding: 5px;
             text-align: center;
             margin-bottom: 10px;
@@ -40,13 +42,20 @@
         .search-box input {
             font-family: "Courier New", Courier, monospace;
             font-size: 12px;
-            padding: 2px;
+            padding: 3px;
             width: 200px;
+            border: 1px solid #008833;
+            background: #f4fff7;
+            color: #004411;
         }
         .search-box button {
             font-family: "Courier New", Courier, monospace;
             font-size: 12px;
-            padding: 2px 6px;
+            padding: 3px 6px;
+            background: #00aa44;
+            color: #ffffff;
+            border: 1px solid #006622;
+            cursor: pointer;
         }
         table {
             width: 100%;
@@ -54,22 +63,28 @@
         }
         td, th {
             text-align: left;
-            padding: 2px 5px;
+            padding: 4px 5px;
+            border-bottom: 1px dotted #ccffdd;
+        }
+        th {
+            background-color: #f4fff7;
+            color: #006622;
         }
         a {
-            color: #0000ee;
+            color: #006622;
             text-decoration: underline;
         }
         a:visited {
-            color: #551a8b;
+            color: #4400aa;
         }
         .icon {
             width: 50px;
+            color: #008833;
         }
         .embedded-image {
             max-width: 100%;
             height: auto;
-            border: 1px solid #000;
+            border: 1px solid #008833;
             margin: 10px 0;
             display: block;
         }
@@ -78,6 +93,24 @@
             font-style: italic;
             font-size: 11px;
             margin-top: 15px;
+            color: #006622;
+        }
+
+        /* Mobile Responsive Adaptation */
+        @media screen and (max-width: 600px) {
+            body {
+                margin: 5px;
+                font-size: 12px;
+            }
+            .search-box input {
+                width: 140px;
+            }
+            .ad-image {
+                max-height: 120px;
+            }
+            td, th {
+                padding: 6px 3px;
+            }
         }
     </style>
 </head>
@@ -116,7 +149,7 @@
     <div id="reader-view" style="display:none;">
         <h1><a href="javascript:void(0)" onclick="closeReader()">[Parent Directory]</a> &mdash; <span id="reader-title"></span></h1>
         <hr>
-        <div id="reader-body" style="white-space: pre-wrap; line-height: 1.4;"></div>
+        <div id="reader-body" style="white-space: pre-wrap; line-height: 1.5;"></div>
         <hr>
     </div>
 
