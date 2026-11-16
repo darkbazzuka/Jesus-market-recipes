@@ -1,159 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Index of /Jesus-market-recipes</title>
     <style>
         body {
             background-color: #ffffff;
             color: #000000;
             font-family: "Courier New", Courier, monospace;
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
-            font-size: 14px;
+            margin: 10px;
+            font-size: 13px;
         }
-
-        /* Top Ad Banner */
+        h1 {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 20px;
+            margin: 0 0 5px 0;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #000000;
+            margin: 5px 0;
+        }
         .ad-banner {
-            border: 1px solid #888;
-            background: #f9f9f9;
-            padding: 10px;
+            border: 1px solid #000000;
+            background: #eeeeee;
+            padding: 5px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
-
         .ad-image {
-            max-height: 200px;
+            max-height: 150px;
             max-width: 100%;
-            object-fit: contain;
             display: block;
             margin: 0 auto;
         }
-
-        /* Generic Directory Listing Header */
-        h1 {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 24px;
-            margin: 0 0 10px 0;
-            font-weight: bold;
+        .search-box {
+            margin: 10px 0;
         }
-
-        .controls {
-            margin-bottom: 10px;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .controls input {
+        .search-box input {
             font-family: "Courier New", Courier, monospace;
-            padding: 4px 8px;
-            border: 1px solid #767676;
-            font-size: 13px;
-            width: 250px;
+            font-size: 12px;
+            padding: 2px;
+            width: 200px;
         }
-
-        hr {
-            border: 0;
-            border-top: 1px solid #888;
-            margin: 8px 0;
+        .search-box button {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 12px;
+            padding: 2px 6px;
         }
-
-        /* Directory Table */
         table {
             width: 100%;
             border-collapse: collapse;
+        }
+        td, th {
             text-align: left;
+            padding: 2px 5px;
         }
-
-        th {
-            padding: 4px 8px;
-            border-bottom: 1px solid #ccc;
-            font-weight: bold;
-        }
-
-        td {
-            padding: 4px 8px;
-        }
-
-        tr:hover {
-            background-color: #f0f0f0;
-        }
-
-        a.dir-link {
-            color: #0000EE;
+        a {
+            color: #0000ee;
             text-decoration: underline;
-            cursor: pointer;
         }
-
-        a.dir-link:visited {
-            color: #551A8B;
+        a:visited {
+            color: #551a8b;
         }
-
         .icon {
-            display: inline-block;
-            width: 45px;
-            color: #555;
-            font-weight: bold;
+            width: 50px;
         }
-
-        /* Reader View */
-        #reader-view {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .reader-content {
-            white-space: pre-wrap;
-            word-break: break-word;
-            line-height: 1.5;
-            padding: 10px 0;
-        }
-
-        .embedded-render-image {
+        .embedded-image {
             max-width: 100%;
             height: auto;
+            border: 1px solid #000;
             margin: 10px 0;
             display: block;
-            border: 1px solid #ccc;
         }
-
         address {
             font-family: "Times New Roman", Times, serif;
             font-style: italic;
-            font-size: 13px;
-            color: #333;
-            margin-top: 10px;
+            font-size: 11px;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Ad Banner -->
-    <div class="ad-banner" id="ad-banner">
-        <div id="ad-container">Loading ads...</div>
+    <!-- Ad Banner -->
+    <div id="ad-banner" class="ad-banner">
+        <div id="ad-container">[Loading ad...]</div>
     </div>
 
-    <!-- Directory Browser View -->
+    <!-- Browser View -->
     <div id="browser-view">
         <h1 id="dir-heading">Index of /</h1>
         
-        <div class="controls">
-            <label for="search-input">Filter:</label>
-            <input type="text" id="search-input" placeholder="type to filter...">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search item...">
+            <button onclick="performSearch()">Search</button>
+            <button onclick="clearSearch()" id="clear-btn" style="display:none;">Reset</button>
         </div>
 
         <hr>
         <table>
-            <thead>
-                <tr>
-                    <th style="width: 60px;">Type</th>
-                    <th>Name</th>
-                    <th style="width: 100px;">Size</th>
-                </tr>
-            </thead>
+            <tr>
+                <th class="icon">Type</th>
+                <th>Name</th>
+                <th style="width: 80px;">Size</th>
+            </tr>
             <tbody id="file-table-body">
                 <tr><td colspan="3">Scanning directory...</td></tr>
             </tbody>
@@ -161,197 +112,226 @@
         <hr>
     </div>
 
-    <!-- File Reader View -->
-    <div id="reader-view">
-        <h1><a class="dir-link" onclick="closeReader()">[Return to Directory]</a> - <span id="reader-title"></span></h1>
+    <!-- Reader View -->
+    <div id="reader-view" style="display:none;">
+        <h1><a href="javascript:void(0)" onclick="closeReader()">[Parent Directory]</a> &mdash; <span id="reader-title"></span></h1>
         <hr>
-        <div id="reader-body" class="reader-content"></div>
+        <div id="reader-body" style="white-space: pre-wrap; line-height: 1.4;"></div>
         <hr>
     </div>
 
-    <address>Jesus Market Server at darkbazzuka.github.io Port 80</address>
+    <address>Jesus Market HTTP Server / Port 80</address>
 
-    <script>
-        const USERNAME = "darkbazzuka";
-        const REPO = "Jesus-market-recipes";
-        const BRANCH = "Html";
+    <script type="text/javascript">
+        var USERNAME = "darkbazzuka";
+        var REPO = "Jesus-market-recipes";
+        var BRANCH = "Html";
 
-        const tableBodyEl = document.getElementById("file-table-body");
-        const dirHeadingEl = document.getElementById("dir-heading");
-        const searchInputEl = document.getElementById("search-input");
-        const browserViewEl = document.getElementById("browser-view");
-        const readerViewEl = document.getElementById("reader-view");
-        const readerTitleEl = document.getElementById("reader-title");
-        const readerBodyEl = document.getElementById("reader-body");
-        const adContainerEl = document.getElementById("ad-container");
+        var tableBodyEl = document.getElementById("file-table-body");
+        var dirHeadingEl = document.getElementById("dir-heading");
+        var searchInputEl = document.getElementById("search-input");
+        var clearBtnEl = document.getElementById("clear-btn");
+        var browserViewEl = document.getElementById("browser-view");
+        var readerViewEl = document.getElementById("reader-view");
+        var readerTitleEl = document.getElementById("reader-title");
+        var readerBodyEl = document.getElementById("reader-body");
+        var adContainerEl = document.getElementById("ad-container");
 
-        let validTree = [];
-        let currentFolder = ""; // "" means root directory
-        let adImages = [];
-        let adInterval = null;
+        var validTree = [];
+        var currentFolder = "";
+        var adImages = [];
+        var adInterval = null;
+        var searchActive = false;
 
-        async function init() {
-            try {
-                const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPO}/git/trees/${BRANCH}?recursive=1`);
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const data = await res.json();
+        function init() {
+            var url = "https://api.github.com/repos/" + USERNAME + "/" + REPO + "/git/trees/" + BRANCH + "?recursive=1";
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            var data = JSON.parse(xhr.responseText);
+                            
+                            // Parse ads
+                            for (var i = 0; i < data.tree.length; i++) {
+                                var item = data.tree[i];
+                                if (item.type === "blob" && item.path.toLowerCase().slice(-4) === ".ads") {
+                                    adImages.push("https://raw.githubusercontent.com/" + USERNAME + "/" + REPO + "/" + BRANCH + "/" + item.path);
+                                }
+                            }
+                            setupAds();
 
-                // 1. Collect .ADS images for the top banner
-                adImages = data.tree
-                    .filter(item => item.type === "blob" && item.path.toLowerCase().endsWith(".ads"))
-                    .map(item => `https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${item.path}`);
-                setupAds();
+                            // Filter tree for RECIPE folders and .txt files
+                            for (var j = 0; j < data.tree.length; j++) {
+                                var node = data.tree[j];
+                                var parts = node.path.split("/");
+                                var name = parts[parts.length - 1];
+                                var lowerName = name.toLowerCase();
 
-                // 2. Filter tree for:
-                //    - Folders (trees) ending in "RECIPE" (case-insensitive)
-                //    - .txt files (blobs) at root OR inside a "RECIPE" folder (ignoring readmes)
-                validTree = data.tree.filter(item => {
-                    const parts = item.path.split("/");
-                    const name = parts[parts.length - 1];
-                    const lowerName = name.toLowerCase();
+                                if (node.type === "tree") {
+                                    var allRecipes = true;
+                                    for (var p = 0; p < parts.length; p++) {
+                                        if (parts[p].toLowerCase().slice(-6) !== "recipe") {
+                                            allRecipes = false;
+                                            break;
+                                        }
+                                    }
+                                    if (allRecipes) validTree.push(node);
+                                } else if (node.type === "blob") {
+                                    if (lowerName.slice(-4) !== ".txt" || lowerName.indexOf("readme") !== -1) continue;
+                                    var folders = parts.slice(0, -1);
+                                    var validParent = true;
+                                    for (var f = 0; f < folders.length; f++) {
+                                        if (folders[f].toLowerCase().slice(-6) !== "recipe") {
+                                            validParent = false;
+                                            break;
+                                        }
+                                    }
+                                    if (validParent) validTree.push(node);
+                                }
+                            }
 
-                    if (item.type === "tree") {
-                        // Only allow folders ending with RECIPE (and ensure parent folders also end with RECIPE)
-                        return parts.every(p => p.toLowerCase().endsWith("recipe"));
+                            renderDirectory();
+                        } catch (e) {
+                            tableBodyEl.innerHTML = '<tr><td colspan="3" style="color:red;">Parse error.</td></tr>';
+                        }
+                    } else {
+                        tableBodyEl.innerHTML = '<tr><td colspan="3" style="color:red;">Connection failed.</td></tr>';
                     }
-
-                    if (item.type === "blob") {
-                        if (!lowerName.endsWith(".txt") || lowerName.includes("readme")) return false;
-                        // Check if it's in root (parts.length === 1) OR all parent folders end in RECIPE
-                        const folders = parts.slice(0, -1);
-                        return folders.every(f => f.toLowerCase().endsWith("recipe"));
-                    }
-
-                    return false;
-                });
-
-                renderDirectory();
-
-                searchInputEl.oninput = () => renderDirectory();
-
-            } catch (err) {
-                tableBodyEl.innerHTML = `<tr><td colspan="3" style="color:red;">Error loading index: ${err.message}</td></tr>`;
-            }
+                }
+            };
+            xhr.send();
         }
 
         function renderDirectory() {
-            const query = searchInputEl.value.toLowerCase().trim();
-            dirHeadingEl.textContent = `Index of /${currentFolder}`;
+            dirHeadingEl.innerHTML = "Index of /" + currentFolder;
             tableBodyEl.innerHTML = "";
 
-            // Add "Parent Directory" link if inside a subfolder
-            if (currentFolder !== "" && query === "") {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td class="icon">[DIR]</td>
-                    <td><a class="dir-link" onclick="goUp()">Parent Directory/</a></td>
-                    <td>-</td>
-                `;
-                tableBodyEl.appendChild(tr);
+            if (currentFolder !== "" && !searchActive) {
+                var trUp = document.createElement("tr");
+                trUp.innerHTML = '<td class="icon">[DIR]</td><td><a href="javascript:void(0)" onclick="goUp()">Parent Directory/</a></td><td>-</td>';
+                tableBodyEl.appendChild(trUp);
             }
 
-            let itemsToShow = [];
+            var itemsToShow = [];
 
-            if (query !== "") {
-                // Global search across all allowed folders and .txt files
-                itemsToShow = validTree.filter(item => {
-                    const name = item.path.split("/").pop().replace(/\.txt$/i, "");
-                    return name.toLowerCase().includes(query);
-                });
+            if (searchActive) {
+                var query = searchInputEl.value.toLowerCase();
+                for (var i = 0; i < validTree.length; i++) {
+                    var rawName = validTree[i].path.split("/").pop();
+                    var cleanName = rawName.replace(/\.txt$/i, "").toLowerCase();
+                    if (cleanName.indexOf(query) !== -1) {
+                        itemsToShow.push(validTree[i]);
+                    }
+                }
             } else {
-                // Show only immediate children of currentFolder
-                itemsToShow = validTree.filter(item => {
-                    const parts = item.path.split("/");
-                    const parentPath = parts.slice(0, -1).join("/");
-                    return parentPath === currentFolder;
-                });
+                for (var j = 0; j < validTree.length; j++) {
+                    var item = validTree[j];
+                    var parts = item.path.split("/");
+                    var parentPath = parts.slice(0, -1).join("/");
+                    if (parentPath === currentFolder) {
+                        itemsToShow.push(item);
+                    }
+                }
             }
-
-            // Sort: Folders first, then files alphabetically
-            itemsToShow.sort((a, b) => {
-                if (a.type !== b.type) return a.type === "tree" ? -1 : 1;
-                return a.path.localeCompare(b.path);
-            });
 
             if (itemsToShow.length === 0) {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `<td colspan="3"><i>No entries found.</i></td>`;
-                tableBodyEl.appendChild(tr);
+                tableBodyEl.innerHTML = '<tr><td colspan="3"><i>No entries found.</i></td></tr>';
                 return;
             }
 
-            itemsToShow.forEach(item => {
-                const tr = document.createElement("tr");
-                const rawName = item.path.split("/").pop();
+            for (var k = 0; k < itemsToShow.length; k++) {
+                var entry = itemsToShow[k];
+                var tr = document.createElement("tr");
+                var segments = entry.path.split("/");
+                var fileName = segments[segments.length - 1];
 
-                if (item.type === "tree") {
-                    tr.innerHTML = `
-                        <td class="icon">[DIR]</td>
-                        <td><a class="dir-link">${rawName}/</a></td>
-                        <td>-</td>
-                    `;
-                    tr.querySelector("a").onclick = () => {
-                        currentFolder = item.path;
-                        searchInputEl.value = "";
-                        renderDirectory();
-                    };
+                if (entry.type === "tree") {
+                    tr.innerHTML = '<td class="icon">[DIR]</td><td><a href="javascript:void(0)" onclick="openFolder(\'' + entry.path + '\')">' + fileName + '/</a></td><td>-</td>';
                 } else {
-                    // Strip .txt from display name
-                    const cleanName = rawName.replace(/\.txt$/i, "");
-                    const sizeText = item.size ? `${item.size} B` : "-";
-                    tr.innerHTML = `
-                        <td class="icon">[TXT]</td>
-                        <td><a class="dir-link">${cleanName}</a></td>
-                        <td>${sizeText}</td>
-                    `;
-                    tr.querySelector("a").onclick = () => openFile(item.path, cleanName);
+                    var displayName = fileName.replace(/\.txt$/i, "");
+                    var sizeStr = entry.size ? entry.size + " B" : "-";
+                    tr.innerHTML = '<td class="icon">[TXT]</td><td><a href="javascript:void(0)" onclick="openFile(\'' + entry.path + '\', \'' + displayName + '\')">' + displayName + '</a></td><td>' + sizeStr + '</td>';
                 }
-
                 tableBodyEl.appendChild(tr);
-            });
+            }
+        }
+
+        function openFolder(path) {
+            currentFolder = path;
+            searchActive = false;
+            searchInputEl.value = "";
+            clearBtnEl.style.display = "none";
+            renderDirectory();
         }
 
         function goUp() {
-            const parts = currentFolder.split("/");
+            var parts = currentFolder.split("/");
             parts.pop();
             currentFolder = parts.join("/");
             renderDirectory();
         }
 
-        async function openFile(filePath, cleanName) {
+        function performSearch() {
+            if (searchInputEl.value.trim() === "") return;
+            searchActive = true;
+            clearBtnEl.style.display = "inline";
+            renderDirectory();
+        }
+
+        function clearSearch() {
+            searchInputEl.value = "";
+            searchActive = false;
+            clearBtnEl.style.display = "none";
+            renderDirectory();
+        }
+
+        function openFile(path, displayName) {
             browserViewEl.style.display = "none";
             readerViewEl.style.display = "block";
-            readerTitleEl.textContent = cleanName;
-            readerBodyEl.textContent = "Loading...";
+            readerTitleEl.innerHTML = displayName;
+            readerBodyEl.innerHTML = "Loading file...";
 
-            try {
-                const res = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/${BRANCH}/${filePath}`);
-                if (!res.ok) throw new Error("Failed to fetch file.");
-                const text = await res.text();
+            var fileUrl = "https://raw.githubusercontent.com/" + USERNAME + "/" + REPO + "/" + BRANCH + "/" + path;
+            var rxhr = new XMLHttpRequest();
+            rxhr.open("GET", fileUrl, true);
+            rxhr.onreadystatechange = function() {
+                if (rxhr.readyState === 4) {
+                    if (rxhr.status === 200) {
+                        var text = rxhr.responseText;
+                        readerBodyEl.innerHTML = "";
+                        var lines = text.split("\n");
 
-                readerBodyEl.innerHTML = "";
-                const lines = text.split("\n");
+                        for (var i = 0; i < lines.length; i++) {
+                            var line = lines[i];
+                            var trimmed = line.replace(/^\s+|\s+$/g, "");
+                            
+                            // Skip THUMBIMAGE line
+                            if (trimmed.toUpperCase().indexOf("THUMBIMAGE:") === 0) continue;
 
-                lines.forEach(line => {
-                    const trimmed = line.trim();
-                    if (trimmed.match(/^THUMBIMAGE:/i)) return; // Hide thumbnail tag if present
-
-                    const match = trimmed.match(/^RENDER IMAGE\s*\*(.*?)\*$/i);
-                    if (match) {
-                        const img = document.createElement("img");
-                        img.src = match[1].trim();
-                        img.className = "embedded-render-image";
-                        img.onerror = () => { img.alt = `[Image failed to load: ${match[1].trim()}]`; };
-                        readerBodyEl.appendChild(img);
+                            // Check RENDER IMAGE
+                            if (trimmed.toUpperCase().indexOf("RENDER IMAGE") === 0) {
+                                var match = trimmed.match(/\*(.*?)\*/);
+                                if (match && match[1]) {
+                                    var img = document.createElement("img");
+                                    img.src = match[1];
+                                    img.className = "embedded-image";
+                                    readerBodyEl.appendChild(img);
+                                }
+                            } else {
+                                var p = document.createElement("div");
+                                p.innerText = line === "" ? "\u00A0" : line;
+                                readerBodyEl.appendChild(p);
+                            }
+                        }
                     } else {
-                        const div = document.createElement("div");
-                        div.textContent = line === "" ? "\u00A0" : line;
-                        readerBodyEl.appendChild(div);
+                        readerBodyEl.innerHTML = "Error loading file.";
                     }
-                });
-            } catch (err) {
-                readerBodyEl.textContent = `Error: ${err.message}`;
-            }
+                }
+            };
+            rxhr.send();
         }
 
         function closeReader() {
@@ -364,17 +344,16 @@
                 document.getElementById("ad-banner").style.display = "none";
                 return;
             }
-            function rotateAd() {
-                const randomUrl = adImages[Math.floor(Math.random() * adImages.length)];
-                adContainerEl.innerHTML = `<img src="${randomUrl}" alt="Sponsored Ad" class="ad-image">`;
+            function rotate() {
+                var rand = adImages[Math.floor(Math.random() * adImages.length)];
+                adContainerEl.innerHTML = '<img src="' + rand + '" class="ad-image" alt="Ad">';
             }
-            rotateAd();
+            rotate();
             if (adInterval) clearInterval(adInterval);
-            adInterval = setInterval(rotateAd, 20000);
+            adInterval = setInterval(rotate, 20000);
         }
 
         init();
     </script>
-
 </body>
 </html>
