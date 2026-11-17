@@ -6,7 +6,7 @@
     <title>Index of /Jesus-market-recipes</title>
     <style>
         body {
-            background-color: #ffffff;
+            background-color: #e8f5ec; /* Light green retro background */
             color: #004411;
             font-family: "Courier New", Courier, monospace;
             margin: 10px;
@@ -23,9 +23,24 @@
             border-top: 1px solid #008833;
             margin: 5px 0;
         }
+        /* Top ASCII Welcome Banner */
+        .ascii-banner {
+            border: 1px solid #008833;
+            background: #d4edd9;
+            padding: 8px;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #004411;
+        }
+        #ascii-cross {
+            display: inline-block;
+            margin-right: 8px;
+        }
         .ad-banner {
             border: 1px solid #008833;
-            background: #e6f9ed;
+            background: #d4edd9;
             padding: 5px;
             text-align: center;
             margin-bottom: 10px;
@@ -45,7 +60,7 @@
             padding: 3px;
             width: 200px;
             border: 1px solid #008833;
-            background: #f4fff7;
+            background: #ffffff;
             color: #004411;
         }
         .search-box button {
@@ -64,10 +79,10 @@
         td, th {
             text-align: left;
             padding: 4px 5px;
-            border-bottom: 1px dotted #ccffdd;
+            border-bottom: 1px dotted #a3d9b1;
         }
         th {
-            background-color: #f4fff7;
+            background-color: #d4edd9;
             color: #006622;
         }
         a {
@@ -115,6 +130,11 @@
     </style>
 </head>
 <body>
+
+    <!-- ASCII Welcome Banner -->
+    <div class="ascii-banner">
+        <span id="ascii-cross">[ + ]</span> WELCOME TO THE JESUS MARKET
+    </div>
 
     <!-- Ad Banner -->
     <div id="ad-banner" class="ad-banner">
@@ -169,12 +189,25 @@
         var readerTitleEl = document.getElementById("reader-title");
         var readerBodyEl = document.getElementById("reader-body");
         var adContainerEl = document.getElementById("ad-container");
+        var asciiCrossEl = document.getElementById("ascii-cross");
 
         var validTree = [];
         var currentFolder = "";
         var adImages = [];
         var adInterval = null;
         var searchActive = false;
+
+        // Rotating ASCII cross frames
+        var crossFrames = ["[ + ]", "[ x ]", "[ * ]", "[ X ]"];
+        var crossIndex = 0;
+
+        function rotateAsciiCross() {
+            crossIndex = (crossIndex + 1) % crossFrames.length;
+            if (asciiCrossEl) {
+                asciiCrossEl.innerHTML = crossFrames[crossIndex];
+            }
+        }
+        setInterval(rotateAsciiCross, 1000); // Rotate every 1 second
 
         function init() {
             var url = "https://api.github.com/repos/" + USERNAME + "/" + REPO + "/git/trees/" + BRANCH + "?recursive=1";
@@ -229,7 +262,7 @@
 
             if (currentFolder !== "" && !searchActive) {
                 var trUp = document.createElement("tr");
-                trUp.innerHTML = '<td class="icon">[DIR]</td><td><a href="javascript:void(0)" onclick="goUp()">Parent Directory/</a></td><td>-</td>';
+                trUp.innerHTML = '<td class="icon">[📁]</td><td><a href="javascript:void(0)" onclick="goUp()">Parent Directory/</a></td><td>-</td>';
                 tableBodyEl.appendChild(trUp);
             }
 
