@@ -37,14 +37,14 @@
         }
         #ascii-cross {
             font-family: "Courier New", Courier, monospace;
-            font-size: 8px;
-            line-height: 9px;
+            font-size: 6px;
+            line-height: 7px;
             background: #ffffff;
             color: #004411;
             border: 1px solid #008833;
             padding: 4px;
-            width: 150px;
-            height: 75px;
+            width: 310px;
+            height: 155px;
             overflow: hidden;
             text-align: center;
             margin: 0;
@@ -148,6 +148,12 @@
                 flex-direction: column;
                 gap: 8px;
             }
+            #ascii-cross {
+                width: 260px;
+                height: 130px;
+                font-size: 5px;
+                line-height: 6px;
+            }
         }
     </style>
 </head>
@@ -219,10 +225,10 @@
         var adInterval = null;
         var searchActive = false;
 
-        // --- 3D Rotating ASCII Cross Engine ---
+        // --- 3D Rotating ASCII Cross Engine (70x70 viewport, 60x60 structural scale) ---
         var A = 0, B = 0, C = 0;
         function render3DCross() {
-            var width = 34, height = 15;
+            var width = 70, height = 35; // 70x70 square grid proportion (35 height rows match character aspect ratio)
             var b = [];
             var zBuffer = [];
             
@@ -231,20 +237,20 @@
                 zBuffer[k] = 0;
             }
 
-            // Generate 3D points for a crucifix shape
+            // Generate 3D points scaled to 60x60 dimensions
             var points = [];
-            // Vertical shaft
-            for (var x = -1; x <= 1; x += 0.5) {
-                for (var y = -3.5; y <= 3.5; y += 0.4) {
-                    for (var z = -1; z <= 1; z += 0.5) {
+            // Vertical shaft of the cross
+            for (var x = -3; x <= 3; x += 0.8) {
+                for (var y = -15; y <= 15; y += 0.8) {
+                    for (var z = -3; z <= 3; z += 0.8) {
                         points.push([x, y, z]);
                     }
                 }
             }
             // Horizontal crossbar
-            for (var x = -3; x <= 3; x += 0.4) {
-                for (var y = 0.5; y <= 2; y += 0.5) {
-                    for (var z = -1; z <= 1; z += 0.5) {
+            for (var x = -14; x <= 14; x += 0.8) {
+                for (var y = -4; y <= 3; y += 0.8) {
+                    for (var z = -3; z <= 3; z += 0.8) {
                         points.push([x, y, z]);
                     }
                 }
@@ -273,15 +279,15 @@
                 var y3 = x2 * sC + y2 * cC;
                 var z3 = z2;
 
-                var ooz = 1 / (z3 + 5);
-                var xp = Math.floor(width / 2 + 10 * ooz * x3);
-                var yp = Math.floor(height / 2 + 5 * ooz * y3);
+                var ooz = 1 / (z3 + 35); // camera distance for 70x70 viewport
+                var xp = Math.floor(width / 2 + 28 * ooz * x3);
+                var yp = Math.floor(height / 2 + 14 * ooz * y3);
 
                 var idx = xp + yp * width;
                 if (idx >= 0 && idx < width * height) {
                     if (ooz > zBuffer[idx]) {
                         zBuffer[idx] = ooz;
-                        var luminance = Math.floor((z3 + 2) * 2);
+                        var luminance = Math.floor((z3 + 15) * 0.35);
                         var chars = ".,-~:;=!*#$@";
                         if (luminance < 0) luminance = 0;
                         if (luminance >= chars.length) luminance = chars.length - 1;
@@ -298,9 +304,9 @@
             var crossEl = document.getElementById("ascii-cross");
             if (crossEl) crossEl.innerHTML = output;
 
-            A += 0.05;
-            B += 0.03;
-            C += 0.02;
+            A += 0.04;
+            B += 0.025;
+            C += 0.015;
         }
         setInterval(render3DCross, 50);
 
