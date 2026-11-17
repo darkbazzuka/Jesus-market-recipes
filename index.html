@@ -23,7 +23,7 @@
             border-top: 1px solid #008833;
             margin: 5px 0;
         }
-        /* Top Header Banner with Black 3D Rotating Cross Box */
+        /* Top Header Banner with Larger Black 3D Rotating Cross Box */
         .header-banner {
             border: 1px solid #008833;
             background: #d4edd9;
@@ -37,14 +37,14 @@
         }
         #ascii-cross {
             font-family: "Courier New", Courier, monospace;
-            font-size: 5px;
-            line-height: 5px;
+            font-size: 4.5px;
+            line-height: 4.5px;
             background: #000000; /* Pitch black box */
             color: #00ff66;      /* Bright detailed green cross */
             border: 1px solid #008833;
             padding: 6px;
-            width: 380px;
-            height: 190px;
+            width: 540px;
+            height: 260px;
             overflow: hidden;
             text-align: center;
             margin: 0;
@@ -149,17 +149,17 @@
                 gap: 8px;
             }
             #ascii-cross {
-                width: 300px;
-                height: 150px;
-                font-size: 4px;
-                line-height: 4px;
+                width: 320px;
+                height: 160px;
+                font-size: 3.5px;
+                line-height: 3.5px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Banner with Black 3D Rotating ASCII Cross -->
+    <!-- Header Banner with Larger Black 3D Rotating ASCII Cross -->
     <div class="header-banner">
         <pre id="ascii-cross">[LOADING 3D...]</pre>
         <div class="banner-title">WELCOME TO THE JESUS MARKET</div>
@@ -225,10 +225,10 @@
         var adInterval = null;
         var searchActive = false;
 
-        // --- Detailed 3D Rotating ASCII Cross Engine (80x40 Grid, Dense Geometry) ---
+        // --- Large Detailed 3D Rotating ASCII Cross Engine (120x55 Grid) ---
         var A = 0, B = 0, C = 0;
         function render3DCross() {
-            var width = 80, height = 40;
+            var width = 120, height = 55;
             var b = [];
             var zBuffer = [];
             
@@ -237,22 +237,22 @@
                 zBuffer[k] = 0;
             }
 
-            // High-density point generation for a solid, detailed cross
+            // High-density point generation for a massive, detailed cross
             var points = [];
             
-            // Vertical shaft (dense spacing)
-            for (var x = -3.5; x <= 3.5; x += 0.4) {
-                for (var y = -16; y <= 16; y += 0.4) {
-                    for (var z = -3.5; z <= 3.5; z += 0.4) {
+            // Vertical shaft (larger & denser)
+            for (var x = -4.5; x <= 4.5; x += 0.35) {
+                for (var y = -22; y <= 22; y += 0.35) {
+                    for (var z = -4.5; z <= 4.5; z += 0.35) {
                         points.push([x, y, z]);
                     }
                 }
             }
             
-            // Horizontal crossbar (dense spacing)
-            for (var x = -15; x <= 15; x += 0.4) {
-                for (var y = -4.5; y <= 3; y += 0.4) {
-                    for (var z = -3.5; z <= 3.5; z += 0.4) {
+            // Horizontal crossbar (larger & denser)
+            for (var x = -22; x <= 22; x += 0.35) {
+                for (var y = -6; y <= 4; y += 0.35) {
+                    for (var z = -4.5; z <= 4.5; z += 0.35) {
                         points.push([x, y, z]);
                     }
                 }
@@ -281,15 +281,15 @@
                 var y3 = x2 * sC + y2 * cC;
                 var z3 = z2;
 
-                var ooz = 1 / (z3 + 38); // Camera distance keeping it centered
-                var xp = Math.floor(width / 2 + 32 * ooz * x3);
-                var yp = Math.floor(height / 2 + 16 * ooz * y3);
+                var ooz = 1 / (z3 + 52); // Camera distance scaled for larger dimensions
+                var xp = Math.floor(width / 2 + 48 * ooz * x3);
+                var yp = Math.floor(height / 2 + 23 * ooz * y3);
 
                 var idx = xp + yp * width;
                 if (idx >= 0 && idx < width * height) {
                     if (ooz > zBuffer[idx]) {
                         zBuffer[idx] = ooz;
-                        var luminance = Math.floor((z3 + 16) * 0.32);
+                        var luminance = Math.floor((z3 + 22) * 0.23);
                         var chars = ".,-~:;=!*#$@";
                         if (luminance < 0) luminance = 0;
                         if (luminance >= chars.length) luminance = chars.length - 1;
@@ -306,11 +306,11 @@
             var crossEl = document.getElementById("ascii-cross");
             if (crossEl) crossEl.innerHTML = output;
 
-            A += 0.035;
-            B += 0.022;
-            C += 0.015;
+            A += 0.03;
+            B += 0.02;
+            C += 0.012;
         }
-        setInterval(render3DCross, 40);
+        setInterval(render3DCross, 35);
 
         // --- Repository & Directory Engine ---
         function init() {
