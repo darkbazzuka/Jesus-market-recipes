@@ -1,5 +1,3 @@
-THUKMBIMAGE: *https://raw.githubusercontent.com/darkbazzuka/Jesus-market-recipes/refs/heads/Html/Untitled.jpg*
-
 What You Will Need
 
     Power Source: A USB cable with a male connector (type A or C). You can cut this off any old USB cable.
