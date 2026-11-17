@@ -23,20 +23,38 @@
             border-top: 1px solid #008833;
             margin: 5px 0;
         }
-        /* Top ASCII Welcome Banner */
-        .ascii-banner {
+        /* Top Header Banner with 3D Rotating Cross */
+        .header-banner {
             border: 1px solid #008833;
             background: #d4edd9;
             padding: 8px;
-            text-align: center;
             margin-bottom: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            color: #004411;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         #ascii-cross {
-            display: inline-block;
-            margin-right: 8px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 8px;
+            line-height: 9px;
+            background: #ffffff;
+            color: #004411;
+            border: 1px solid #008833;
+            padding: 4px;
+            width: 150px;
+            height: 75px;
+            overflow: hidden;
+            text-align: center;
+            margin: 0;
+        }
+        .banner-title {
+            font-weight: bold;
+            font-size: 15px;
+            color: #004411;
+            letter-spacing: 1px;
+            text-align: center;
         }
         .ad-banner {
             border: 1px solid #008833;
@@ -126,14 +144,19 @@
             td, th {
                 padding: 6px 3px;
             }
+            .header-banner {
+                flex-direction: column;
+                gap: 8px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ASCII Welcome Banner -->
-    <div class="ascii-banner">
-        <span id="ascii-cross">[ + ]</span> WELCOME TO THE JESUS MARKET
+    <!-- Header Banner with 3D Rotating ASCII Cross -->
+    <div class="header-banner">
+        <pre id="ascii-cross">[LOADING 3D...]</pre>
+        <div class="banner-title">WELCOME TO THE JESUS MARKET</div>
     </div>
 
     <!-- Ad Banner -->
@@ -189,7 +212,6 @@
         var readerTitleEl = document.getElementById("reader-title");
         var readerBodyEl = document.getElementById("reader-body");
         var adContainerEl = document.getElementById("ad-container");
-        var asciiCrossEl = document.getElementById("ascii-cross");
 
         var validTree = [];
         var currentFolder = "";
@@ -197,18 +219,92 @@
         var adInterval = null;
         var searchActive = false;
 
-        // Rotating ASCII cross frames
-        var crossFrames = ["[ + ]", "[ x ]", "[ * ]", "[ X ]"];
-        var crossIndex = 0;
-
-        function rotateAsciiCross() {
-            crossIndex = (crossIndex + 1) % crossFrames.length;
-            if (asciiCrossEl) {
-                asciiCrossEl.innerHTML = crossFrames[crossIndex];
+        // --- 3D Rotating ASCII Cross Engine ---
+        var A = 0, B = 0, C = 0;
+        function render3DCross() {
+            var width = 34, height = 15;
+            var b = [];
+            var zBuffer = [];
+            
+            for (var k = 0; k < width * height; k++) {
+                b[k] = ' ';
+                zBuffer[k] = 0;
             }
-        }
-        setInterval(rotateAsciiCross, 1000); // Rotate every 1 second
 
+            // Generate 3D points for a crucifix shape
+            var points = [];
+            // Vertical shaft
+            for (var x = -1; x <= 1; x += 0.5) {
+                for (var y = -3.5; y <= 3.5; y += 0.4) {
+                    for (var z = -1; z <= 1; z += 0.5) {
+                        points.push([x, y, z]);
+                    }
+                }
+            }
+            // Horizontal crossbar
+            for (var x = -3; x <= 3; x += 0.4) {
+                for (var y = 0.5; y <= 2; y += 0.5) {
+                    for (var z = -1; z <= 1; z += 0.5) {
+                        points.push([x, y, z]);
+                    }
+                }
+            }
+
+            var cA = Math.cos(A), sA = Math.sin(A);
+            var cB = Math.cos(B), sB = Math.sin(B);
+            var cC = Math.cos(C), sC = Math.sin(C);
+
+            for (var i = 0; i < points.length; i++) {
+                var p = points[i];
+                var x = p[0], y = p[1], z = p[2];
+
+                // Rotation X
+                var y1 = y * cA - z * sA;
+                var z1 = y * sA + z * cA;
+                var x1 = x;
+
+                // Rotation Y
+                var x2 = x1 * cB + z1 * sB;
+                var z2 = -x1 * sB + z1 * cB;
+                var y2 = y1;
+
+                // Rotation Z
+                var x3 = x2 * cC - y2 * sC;
+                var y3 = x2 * sC + y2 * cC;
+                var z3 = z2;
+
+                var ooz = 1 / (z3 + 5);
+                var xp = Math.floor(width / 2 + 10 * ooz * x3);
+                var yp = Math.floor(height / 2 + 5 * ooz * y3);
+
+                var idx = xp + yp * width;
+                if (idx >= 0 && idx < width * height) {
+                    if (ooz > zBuffer[idx]) {
+                        zBuffer[idx] = ooz;
+                        var luminance = Math.floor((z3 + 2) * 2);
+                        var chars = ".,-~:;=!*#$@";
+                        if (luminance < 0) luminance = 0;
+                        if (luminance >= chars.length) luminance = chars.length - 1;
+                        b[idx] = chars[luminance];
+                    }
+                }
+            }
+
+            var output = "";
+            for (var k = 0; k < width * height; k++) {
+                output += b[k];
+                if ((k + 1) % width === 0) output += "\n";
+            }
+            var crossEl = document.getElementById("ascii-cross");
+            if (crossEl) crossEl.innerHTML = output;
+
+            A += 0.05;
+            B += 0.03;
+            C += 0.02;
+        }
+        setInterval(render3DCross, 50);
+
+        // --- Repository & Directory Engine ---
         function init() {
             var url = "https://api.github.com/repos/" + USERNAME + "/" + REPO + "/git/trees/" + BRANCH + "?recursive=1";
             
