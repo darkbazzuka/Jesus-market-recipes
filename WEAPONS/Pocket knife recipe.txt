@@ -1,0 +1,80 @@
+Materials:
+
+    Steel: Don’t buy expensive stock yet. Use an old metal file. Files are made of high-carbon steel, which is perfect for beginners. They’re cheap at any hardware store. An old leaf spring from a car suspension works too, but files are easier to find.
+    Handle Material: Wood blocks, bone, or even stable micarta. For your first one, use scrap wood. It’s forgiving.
+    Fasteners: Two small metal pins (rivets) to hold the handle together. You can cut these from a nail or buy cheap brass pins.
+    Adhesive: Strong epoxy (like JB Weld or standard 5-minute epoxy).
+
+Tools:
+
+    Angle Grinder: This is non-negotiable for cutting steel fast. If you don’t have one, you can do it with a hacksaw, but it will take all day.
+    Files: A flat metal file and a round file. You’ll spend hours filing.
+    Drill: With metal drill bits.
+    Sandpaper: Grits 80, 220, 400, 600, and 1000.
+    Heat Source: A propane torch (Bernzomatic) works fine for small knives. A forge is better, but a torch is cheaper.
+    Quench Medium: Cooking oil (canola or vegetable) in a deep jar. Do not use water unless you know exactly what steel you have; oil is safer and less likely to crack the blade.
+    Safety Gear: Eye protection (glass shards fly everywhere), gloves (for handling sharp edges later), and a mask (grinding dust is bad for your lungs).
+
+Step 1: Design & Cut the Blank
+
+Keep it simple. Draw a basic drop-point shape on a piece of paper. Transfer that drawing onto your metal file using a marker or scribe.
+
+    Cutting: Put on your eye protection. Use the angle grinder with a cut-off wheel to slice out the shape. Leave about 1/16th of an inch extra on all sides—you’ll grind that down later.
+    The Tang: Make sure the tang (the part of the blade that goes into the handle) is straight and wide enough to support the handle scales.
+
+Step 2: Grind the Bevels
+
+This is where most people quit because it’s tedious. You need to create the angled edges that form the cutting edge.
+
+    Symmetry is King: Try to keep both sides of the blade identical. If one side is steeper than the other, the knife will cut crooked.
+    Technique: Use the angle grinder with a grinding disc to remove bulk material. Switch to sandpaper wrapped around a flat block for finer work. Keep checking your symmetry by looking at the reflection of light on the bevels—they should look mirror-like and even.
+
+Step 3: Drill Handle Holes
+
+Before you heat-treat, drill your holes! It’s much harder to drill hardened steel.
+
+    Mark the center points for your pins on the tang.
+    Use a metal drill bit to punch through. Go slow, use cutting fluid (or WD-40) to keep the bit cool.
+    Test fit your handle material now. Sand the inside of the wood until it fits snugly against the tang. No gaps.
+
+Step 4: Heat Treatment (Hardening)
+
+This turns soft steel into hard steel.
+
+    Heat: Light your propane torch. Heat the entire blade evenly, not just the edge. You’re looking for a "critical temperature." For high-carbon steel, this is when the metal glows a bright cherry red (about 1400°F–1500°F / 760°C–815°C).
+
+    Pro Tip: If you have a magnet, bring it close to the hot steel. When the magnet stops sticking, you’ve hit the critical temp.
+
+    Quench: Quickly plunge the glowing blade vertically into your jar of oil. Hold it there until the bubbling stops. The blade is now extremely hard but also very brittle (like glass).
+
+Step 5: Tempering (Toughening)
+
+If you stop here, your knife will snap if you drop it. You need to temper it.
+
+    Oven Method: Place the knife in a kitchen oven set to 400°F (200°C) for 2 hours. This reduces brittleness while keeping hardness.
+    Color Check: After tempering, let it cool. Look at the blade. Near the edge, you might see a faint straw or blue color. That’s normal and good.
+
+Step 6: Assemble the Handle
+
+Now for the fun part—making it look like a real tool.
+
+    Glue: Apply epoxy to the tang and insert the wooden handle scales. Wipe away excess glue immediately.
+    Pin: Insert your metal pins through the pre-drilled holes. Hammer them flush with the handle surface.
+    Shape: Once the glue is fully cured (wait 24 hours), use your grinder and files to shape the handle to fit your hand. Sand it smooth.
+
+Step 7: Sharpen & Finish
+
+    Sand: Sand the whole blade from coarse (80 grit) to fine (1000 grit). This removes scratches and makes it look professional.
+    Sharpen: Use sharpening stones or a guided system. Start with a coarse stone and work up to a fine polish. Aim for a consistent edge.
+    Protect: Rub mineral oil or beeswax into the wood handle. Wipe the steel with a light coat of oil to prevent rust.
+
+Common Mistakes to Avoid
+
+    Overheating: If you melt the steel, start over.
+    Asymmetrical Bevels: Check your work often. Uneven grinds mean uneven wear.
+    Skipping Temper: Your knife will chip easily if you skip this step.
+    Rushing the Glue: Wait for the epoxy to fully cure before using the knife heavily.
+
+That’s it. Your first knife won’t look like a $200 custom piece, but it will be sharp, durable, and entirely yours. Good luck!
+
+NoTrack AI — https://notrack.ai/
